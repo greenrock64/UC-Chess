@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace UC_Chess
 {
-    //Test Comment
     public class Core : Game
     {
         int windowWidth = 512;
@@ -30,8 +29,8 @@ namespace UC_Chess
             graphics = new GraphicsDeviceManager(this);
 
             this.IsMouseVisible = true;
-            graphics.PreferredBackBufferWidth = 512;
-            graphics.PreferredBackBufferHeight = 512;
+            graphics.PreferredBackBufferWidth = windowWidth;
+            graphics.PreferredBackBufferHeight = windowHeight;
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
@@ -39,21 +38,21 @@ namespace UC_Chess
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             board = new Chess();
-            board.printBoard();
+
+            //Debug board display
+            //board.printBoard();
+
             curSelect = new Vector2(-1, -1);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             tempTile = Content.Load<Texture2D>("tile");
             tempPieceB = Content.Load <Texture2D>("blackPawn");
             tempPieceW = Content.Load<Texture2D>("whitePawn");
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void UnloadContent()
@@ -65,14 +64,9 @@ namespace UC_Chess
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                board.tryMove(1, 0, 3, 0);
-            }
 
             if(Mouse.GetState().LeftButton == ButtonState.Pressed && lastMouse.LeftButton == ButtonState.Released)
             {
-                //TODO: No hard coding window size
                 if(Mouse.GetState().Position.X > 0 && Mouse.GetState().Position.X < windowWidth)
                 {
                     if (Mouse.GetState().Position.Y > 0 && Mouse.GetState().Position.Y < windowHeight)
@@ -81,13 +75,19 @@ namespace UC_Chess
                         int boardPosX = (int)Mouse.GetState().Position.Y / tileHeight;
                         if (curSelect.X == -1)
                         {
-                            curSelect.X = boardPosX;
-                            curSelect.Y = boardPosY;
-                            System.Console.WriteLine(curSelect.ToString());
+                            if (board.getPos(boardPosX, boardPosY) != 0)
+                            {
+                                curSelect.X = boardPosX;
+                                curSelect.Y = boardPosY;
+                                System.Console.WriteLine(curSelect.ToString());
+                            }
                         }
                         else
                         {
-                            board.tryMove((int)curSelect.X, (int)curSelect.Y, boardPosX, boardPosY);
+                            if (curSelect != new Vector2(boardPosX, boardPosY))
+                            {
+                                board.tryMove((int)curSelect.X, (int)curSelect.Y, boardPosX, boardPosY);
+                            }
                             curSelect = new Vector2(-1, -1);
                         }
                     }
@@ -126,14 +126,13 @@ namespace UC_Chess
                         spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                     }
 
-                    if (board.getBoard()[u,i] == 1)
+                    switch (board.getPos(u, i))
                     {
-                        //spriteBatch.Draw(tempPieceB, new Rectangle(i * 32, u * 32, 32, 32), Color.White);
-                    }
-
-                    if (board.getBoard()[u, i] == 1)
-                    {
-                        spriteBatch.Draw(tempPieceW, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                        case 1:
+                            spriteBatch.Draw(tempPieceW, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
