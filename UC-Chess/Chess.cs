@@ -68,7 +68,14 @@ namespace UC_Chess
                 {
                     if (i == 1 || i == 6)
                     {
-                        board[i, u] = 1;
+                        if (i == 1)
+                        {
+                            board[i, u] = 1;
+                        }
+                        else
+                        {
+                            board[i, u] = 7;
+                        }
                     }
                     if(i == 0 || i == 7)
                     {
@@ -79,21 +86,30 @@ namespace UC_Chess
         }
         public void setFrontRow(int[,] board, int i)
         {
-            board[i, 0] = 2;
-            board[i, 1] = 3;
-            board[i, 2] = 4;
+
             if(i == 0)
             {
+                board[i, 0] = 2;
+                board[i, 1] = 3;
+                board[i, 2] = 4;
                 board[i, 3] = 5;
                 board[i, 4] = 6;
-            }else
-            {
-                board[i, 3] = 6;
-                board[i, 4] = 5;
+                board[i, 5] = 4;
+                board[i, 6] = 3;
+                board[i, 7] = 2;
             }
-            board[i, 5] = 4;
-            board[i, 6] = 3;
-            board[i, 7] = 2;
+            else
+            {
+                board[i, 0] = 8;
+                board[i, 1] = 9;
+                board[i, 2] = 10;
+                board[i, 3] = 12;
+                board[i, 4] = 11;
+                board[i, 5] = 10;
+                board[i, 6] = 9;
+                board[i, 7] = 8;
+            }
+
         }
 
         //Test methods
