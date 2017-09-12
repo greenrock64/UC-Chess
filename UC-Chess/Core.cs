@@ -15,9 +15,22 @@ namespace UC_Chess
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //TODO: Move to dedicated assetLoader class
         Texture2D tempTile;
-        Texture2D tempPieceB;
-        Texture2D tempPieceW;
+        //Black sprites
+        Texture2D blackPawn;
+        Texture2D blackCastle;
+        Texture2D blackBishop;
+        Texture2D blackKnight;
+        Texture2D blackQueen;
+        Texture2D blackKing;
+        //White sprites
+        Texture2D whitePawn;
+        Texture2D whiteCastle;
+        Texture2D whiteBishop;
+        Texture2D whiteKnight;
+        Texture2D whiteQueen;
+        Texture2D whiteKing;
 
         Chess board;
 
@@ -50,9 +63,21 @@ namespace UC_Chess
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            //TODO: Move to dedicated assetLoader class
             tempTile = Content.Load<Texture2D>("tile");
-            tempPieceB = Content.Load <Texture2D>("blackPawn");
-            tempPieceW = Content.Load<Texture2D>("whitePawn");
+            blackPawn = Content.Load <Texture2D>("blackPawn");
+            blackCastle = Content.Load<Texture2D>("blackRook");
+            blackBishop = Content.Load<Texture2D>("blackBishop");
+            blackKnight = Content.Load<Texture2D>("blackKnight");
+            blackQueen = Content.Load<Texture2D>("blackQueen");
+            blackKing = Content.Load<Texture2D>("blackKing");
+
+            whitePawn = Content.Load<Texture2D>("whitePawn");
+            whiteCastle = Content.Load<Texture2D>("whiteRook");
+            whiteBishop = Content.Load<Texture2D>("whiteBishop");
+            whiteKnight = Content.Load<Texture2D>("whiteKnight");
+            whiteQueen = Content.Load<Texture2D>("whiteQueen");
+            whiteKing = Content.Load<Texture2D>("whiteKing");
         }
 
         protected override void UnloadContent()
@@ -129,7 +154,40 @@ namespace UC_Chess
                     switch (board.getPos(u, i))
                     {
                         case 1:
-                            spriteBatch.Draw(tempPieceW, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(whitePawn, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 2:
+                            spriteBatch.Draw(whiteCastle, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 3:
+                            spriteBatch.Draw(whiteBishop, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 4:
+                            spriteBatch.Draw(whiteKnight, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 5:
+                            spriteBatch.Draw(whiteQueen, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 6:
+                            spriteBatch.Draw(whiteKing, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 7:
+                            spriteBatch.Draw(blackPawn, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 8:
+                            spriteBatch.Draw(blackCastle, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 9:
+                            spriteBatch.Draw(blackBishop, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 10:
+                            spriteBatch.Draw(blackKnight, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 11:
+                            spriteBatch.Draw(blackQueen, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 12:
+                            spriteBatch.Draw(blackKing, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         default:
                             break;
