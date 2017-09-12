@@ -6,6 +6,7 @@ namespace UC_Chess
 {
     public class Core : Game
     {
+        //Temporary variables for screen sizes
         int windowWidth = 512;
         int windowHeight = 512;
         int tileWidth = 512 / 8;
@@ -90,6 +91,7 @@ namespace UC_Chess
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //Clicking and moving chess pieces
             if(Mouse.GetState().LeftButton == ButtonState.Pressed && lastMouse.LeftButton == ButtonState.Released)
             {
                 if(Mouse.GetState().Position.X > 0 && Mouse.GetState().Position.X < windowWidth)
@@ -151,6 +153,7 @@ namespace UC_Chess
                         spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                     }
 
+                    //TODO: More efficient (piece class?)
                     switch (board.getPos(u, i))
                     {
                         case 1:

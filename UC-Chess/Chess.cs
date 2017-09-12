@@ -46,8 +46,10 @@ namespace UC_Chess
         /// <returns>Wether the move was successful</returns>
         public bool tryMove(int x, int y, int newX, int newY)
         {
+            //If there is a piece to move
             if(board[x,y] != 0)
             {
+                //Successfully move piece
                 board[newX, newY] = board[x, y];
                 board[x, y] = 0;
                 return true;
@@ -66,6 +68,7 @@ namespace UC_Chess
                 //Col
                 for (int u = 0; u < 8; u++)
                 {
+                    //Set pawns
                     if (i == 1 || i == 6)
                     {
                         if (i == 1)
@@ -77,6 +80,7 @@ namespace UC_Chess
                             board[i, u] = 7;
                         }
                     }
+                    //Set core pieces
                     if(i == 0 || i == 7)
                     {
                         setFrontRow(board, i);
@@ -86,8 +90,7 @@ namespace UC_Chess
         }
         public void setFrontRow(int[,] board, int i)
         {
-
-            if(i == 0)
+            if(i == 0) //White Pieces
             {
                 board[i, 0] = 2;
                 board[i, 1] = 3;
@@ -98,7 +101,7 @@ namespace UC_Chess
                 board[i, 6] = 3;
                 board[i, 7] = 2;
             }
-            else
+            else //Black Pieces
             {
                 board[i, 0] = 8;
                 board[i, 1] = 9;
