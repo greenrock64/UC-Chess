@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace UC_Chess
 {
-    //Test Comment
     public class Core : Game
     {
+        //Temporary variables for screen sizes
         int windowWidth = 512;
         int windowHeight = 512;
         int tileWidth = 512 / 8;
@@ -16,9 +16,22 @@ namespace UC_Chess
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //TODO: Move to dedicated assetLoader class
         Texture2D tempTile;
-        Texture2D tempPieceB;
-        Texture2D tempPieceW;
+        //Black sprites
+        Texture2D blackPawn;
+        Texture2D blackCastle;
+        Texture2D blackBishop;
+        Texture2D blackKnight;
+        Texture2D blackQueen;
+        Texture2D blackKing;
+        //White sprites
+        Texture2D whitePawn;
+        Texture2D whiteCastle;
+        Texture2D whiteBishop;
+        Texture2D whiteKnight;
+        Texture2D whiteQueen;
+        Texture2D whiteKing;
 
         Chess board;
 
@@ -30,8 +43,8 @@ namespace UC_Chess
             graphics = new GraphicsDeviceManager(this);
 
             this.IsMouseVisible = true;
-            graphics.PreferredBackBufferWidth = 512;
-            graphics.PreferredBackBufferHeight = 512;
+            graphics.PreferredBackBufferWidth = windowWidth;
+            graphics.PreferredBackBufferHeight = windowHeight;
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
@@ -39,21 +52,33 @@ namespace UC_Chess
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             board = new Chess();
-            board.printBoard();
+
+            //Debug board display
+            //board.printBoard();
+
             curSelect = new Vector2(-1, -1);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            //TODO: Move to dedicated assetLoader class
             tempTile = Content.Load<Texture2D>("tile");
-            tempPieceB = Content.Load <Texture2D>("blackPawn");
-            tempPieceW = Content.Load<Texture2D>("whitePawn");
-            // TODO: use this.Content to load your game content here
+            blackPawn = Content.Load <Texture2D>("blackPawn");
+            blackCastle = Content.Load<Texture2D>("blackRook");
+            blackBishop = Content.Load<Texture2D>("blackBishop");
+            blackKnight = Content.Load<Texture2D>("blackKnight");
+            blackQueen = Content.Load<Texture2D>("blackQueen");
+            blackKing = Content.Load<Texture2D>("blackKing");
+
+            whitePawn = Content.Load<Texture2D>("whitePawn");
+            whiteCastle = Content.Load<Texture2D>("whiteRook");
+            whiteBishop = Content.Load<Texture2D>("whiteBishop");
+            whiteKnight = Content.Load<Texture2D>("whiteKnight");
+            whiteQueen = Content.Load<Texture2D>("whiteQueen");
+            whiteKing = Content.Load<Texture2D>("whiteKing");
         }
 
         protected override void UnloadContent()
@@ -65,14 +90,10 @@ namespace UC_Chess
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                board.tryMove(1, 0, 3, 0);
-            }
 
+            //Clicking and moving chess pieces
             if(Mouse.GetState().LeftButton == ButtonState.Pressed && lastMouse.LeftButton == ButtonState.Released)
             {
-                //TODO: No hard coding window size
                 if(Mouse.GetState().Position.X > 0 && Mouse.GetState().Position.X < windowWidth)
                 {
                     if (Mouse.GetState().Position.Y > 0 && Mouse.GetState().Position.Y < windowHeight)
@@ -81,13 +102,19 @@ namespace UC_Chess
                         int boardPosX = (int)Mouse.GetState().Position.Y / tileHeight;
                         if (curSelect.X == -1)
                         {
-                            curSelect.X = boardPosX;
-                            curSelect.Y = boardPosY;
-                            System.Console.WriteLine(curSelect.ToString());
+                            if (board.getPos(boardPosX, boardPosY) != 0)
+                            {
+                                curSelect.X = boardPosX;
+                                curSelect.Y = boardPosY;
+                                System.Console.WriteLine(curSelect.ToString());
+                            }
                         }
                         else
                         {
-                            board.tryMove((int)curSelect.X, (int)curSelect.Y, boardPosX, boardPosY);
+                            if (curSelect != new Vector2(boardPosX, boardPosY))
+                            {
+                                board.tryMove((int)curSelect.X, (int)curSelect.Y, boardPosX, boardPosY);
+                            }
                             curSelect = new Vector2(-1, -1);
                         }
                     }
@@ -126,14 +153,47 @@ namespace UC_Chess
                         spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                     }
 
-                    if (board.getBoard()[u,i] == 1)
+                    //TODO: More efficient (piece class?)
+                    switch (board.getPos(u, i))
                     {
-                        //spriteBatch.Draw(tempPieceB, new Rectangle(i * 32, u * 32, 32, 32), Color.White);
-                    }
-
-                    if (board.getBoard()[u, i] == 1)
-                    {
-                        spriteBatch.Draw(tempPieceW, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                        case 1:
+                            spriteBatch.Draw(whitePawn, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 2:
+                            spriteBatch.Draw(whiteCastle, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 3:
+                            spriteBatch.Draw(whiteBishop, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 4:
+                            spriteBatch.Draw(whiteKnight, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 5:
+                            spriteBatch.Draw(whiteQueen, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 6:
+                            spriteBatch.Draw(whiteKing, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 7:
+                            spriteBatch.Draw(blackPawn, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 8:
+                            spriteBatch.Draw(blackCastle, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 9:
+                            spriteBatch.Draw(blackBishop, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 10:
+                            spriteBatch.Draw(blackKnight, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 11:
+                            spriteBatch.Draw(blackQueen, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        case 12:
+                            spriteBatch.Draw(blackKing, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
