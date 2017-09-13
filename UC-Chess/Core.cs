@@ -16,23 +16,6 @@ namespace UC_Chess
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        //TODO: Move to dedicated assetLoader class
-        Texture2D tempTile;
-        //Black sprites
-        Texture2D blackPawn;
-        Texture2D blackCastle;
-        Texture2D blackBishop;
-        Texture2D blackKnight;
-        Texture2D blackQueen;
-        Texture2D blackKing;
-        //White sprites
-        Texture2D whitePawn;
-        Texture2D whiteCastle;
-        Texture2D whiteBishop;
-        Texture2D whiteKnight;
-        Texture2D whiteQueen;
-        Texture2D whiteKing;
-
         Chess board;
 
         MouseState lastMouse;
@@ -65,20 +48,7 @@ namespace UC_Chess
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //TODO: Move to dedicated assetLoader class
-            tempTile = Content.Load<Texture2D>("tile");
-            blackPawn = Content.Load <Texture2D>("blackPawn");
-            blackCastle = Content.Load<Texture2D>("blackRook");
-            blackBishop = Content.Load<Texture2D>("blackBishop");
-            blackKnight = Content.Load<Texture2D>("blackKnight");
-            blackQueen = Content.Load<Texture2D>("blackQueen");
-            blackKing = Content.Load<Texture2D>("blackKing");
-
-            whitePawn = Content.Load<Texture2D>("whitePawn");
-            whiteCastle = Content.Load<Texture2D>("whiteRook");
-            whiteBishop = Content.Load<Texture2D>("whiteBishop");
-            whiteKnight = Content.Load<Texture2D>("whiteKnight");
-            whiteQueen = Content.Load<Texture2D>("whiteQueen");
-            whiteKing = Content.Load<Texture2D>("whiteKing");
+            AssetManager.load(Content);
         }
 
         protected override void UnloadContent()
@@ -142,59 +112,59 @@ namespace UC_Chess
                 {
                     if (i % 2 > 0 && u % 2 == 0)
                     {
-                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
                     }
                     else if (i % 2 == 0 && u % 2 > 0)
                     {
-                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
                     }
                     else
                     {
-                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                     }
                     if (u == curSelect.X && i == curSelect.Y)
                     {
-                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Crimson);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Crimson);
                     }
 
                     //TODO: More efficient (piece class?)
                     switch (board.getPos(u, i))
                     {
                         case 1:
-                            spriteBatch.Draw(whitePawn, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("whitePawn"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 2:
-                            spriteBatch.Draw(whiteCastle, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("whiteCastle"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 3:
-                            spriteBatch.Draw(whiteBishop, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("whiteBishop"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 4:
-                            spriteBatch.Draw(whiteKnight, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("whiteKnight"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 5:
-                            spriteBatch.Draw(whiteQueen, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("whiteQueen"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 6:
-                            spriteBatch.Draw(whiteKing, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("whiteKing"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 7:
-                            spriteBatch.Draw(blackPawn, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("blackPawn"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 8:
-                            spriteBatch.Draw(blackCastle, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("blackCastle"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 9:
-                            spriteBatch.Draw(blackBishop, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("blackBishop"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 10:
-                            spriteBatch.Draw(blackKnight, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("blackKnight"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 11:
-                            spriteBatch.Draw(blackQueen, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("blackQueen"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         case 12:
-                            spriteBatch.Draw(blackKing, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                            spriteBatch.Draw(AssetManager.getTex("blackKing"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                             break;
                         default:
                             break;

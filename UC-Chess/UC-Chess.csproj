@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AssetManager.cs" />
     <Compile Include="Chess.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Program.cs" />
