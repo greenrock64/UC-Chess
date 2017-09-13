@@ -152,6 +152,10 @@ namespace UC_Chess
                     {
                         spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                     }
+                    if (u == curSelect.X && i == curSelect.Y)
+                    {
+                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Crimson);
+                    }
 
                     //TODO: More efficient (piece class?)
                     switch (board.getPos(u, i))
