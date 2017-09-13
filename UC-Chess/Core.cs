@@ -9,6 +9,7 @@ namespace UC_Chess
         //Graphics Variables
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Renderer render;
         //Temporary variables for screen sizes
         int windowWidth = 512;
         int windowHeight = 512;
@@ -37,7 +38,8 @@ namespace UC_Chess
         protected override void Initialize()
         {
             board = new Chess();
-
+            render = new Renderer();
+            render.setWindowSize(windowWidth, windowHeight);
             //Debug board display
             //board.printBoard();
 
@@ -80,6 +82,7 @@ namespace UC_Chess
                             {
                                 curSelect.X = boardPosX;
                                 curSelect.Y = boardPosY;
+                                render.setHighlights(new Vector2[] {curSelect});
                                 System.Console.WriteLine(curSelect.ToString());
                             }
                         }
@@ -90,6 +93,7 @@ namespace UC_Chess
                                 board.tryMove((int)curSelect.X, (int)curSelect.Y, boardPosX, boardPosY);
                             }
                             curSelect = new Vector2(-1, -1);
+                            render.setHighlights(new Vector2[] { curSelect });
                         }
                     }
                 }
@@ -104,78 +108,8 @@ namespace UC_Chess
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //TODO: 
-            //Move to dedicated render class
-            //Support larger graphics sizes
-            //Make not terrible/more expandable
             spriteBatch.Begin();
-            for(int i = 0; i < 8; i++)
-            {
-                for(int u = 0; u < 8; u++)
-                {
-                    //Math to alternate tile checkering
-                    if (i % 2 > 0 && u % 2 == 0)
-                    {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
-                    }
-                    else if (i % 2 == 0 && u % 2 > 0)
-                    {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                    }
-                    //If the tile is selected by the user, make it crimson
-                    if (u == curSelect.X && i == curSelect.Y)
-                    {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Crimson);
-                    }
-
-                    //TODO: More efficient (piece class?)
-                    switch (board.getPos(u, i))
-                    {
-                        case 1:
-                            spriteBatch.Draw(AssetManager.getTex("whitePawn"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 2:
-                            spriteBatch.Draw(AssetManager.getTex("whiteCastle"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 3:
-                            spriteBatch.Draw(AssetManager.getTex("whiteBishop"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 4:
-                            spriteBatch.Draw(AssetManager.getTex("whiteKnight"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 5:
-                            spriteBatch.Draw(AssetManager.getTex("whiteQueen"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 6:
-                            spriteBatch.Draw(AssetManager.getTex("whiteKing"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 7:
-                            spriteBatch.Draw(AssetManager.getTex("blackPawn"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 8:
-                            spriteBatch.Draw(AssetManager.getTex("blackCastle"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 9:
-                            spriteBatch.Draw(AssetManager.getTex("blackBishop"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 10:
-                            spriteBatch.Draw(AssetManager.getTex("blackKnight"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 11:
-                            spriteBatch.Draw(AssetManager.getTex("blackQueen"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 12:
-                            spriteBatch.Draw(AssetManager.getTex("blackKing"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
+            render.renderBoard(board, spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
