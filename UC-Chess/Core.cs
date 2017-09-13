@@ -75,17 +75,14 @@ namespace UC_Chess
         {
             //Input
             //TODO: Input handler class?
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                if (lastKey.IsKeyUp(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && lastKey.IsKeyUp(Keys.Escape))
+                if (state == 1)
                 {
-                    if (state == 1)
-                    {
-                        state = 0;
-                    }
-                    else if (state == 0)
-                    {
-                        state = 1;
-                    }
+                    state = 0;
+                }
+                else if (state == 0)
+                {
+                    state = 1;
                 }
                 //Exit();
 
@@ -146,6 +143,7 @@ namespace UC_Chess
 
             spriteBatch.Begin();
             render.renderBoard(board, spriteBatch);
+            //GUI Render test
             if (state == 1)
             {
                 //render.renderGUI(guiElements?, spriteBatch);
