@@ -21,7 +21,14 @@ namespace UC_Chess
 
         //Input Variables
         MouseState lastMouse;
+        KeyboardState lastKey;
         Vector2 curSelect;
+
+        //Input state variables (test)
+        int state;
+        //Temp GUI Elements
+        Rectangle continueButton = new Rectangle(231, 200, 50, 25);
+        Rectangle quitButton = new Rectangle(231, 250, 50, 25);
 
         public Core()
         {
@@ -46,6 +53,10 @@ namespace UC_Chess
             //Which tile the user has selected
             //Defaults to off board when nothing selected
             curSelect = new Vector2(-1, -1);
+
+            //Input state variables (test)
+            state = 0;
+
             base.Initialize();
         }
 
@@ -65,41 +76,66 @@ namespace UC_Chess
             //Input
             //TODO: Input handler class?
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                if (lastKey.IsKeyUp(Keys.Escape))
+                {
+                    if (state == 1)
+                    {
+                        state = 0;
+                    }
+                    else if (state == 0)
+                    {
+                        state = 1;
+                    }
+                }
+                //Exit();
+
             if(Mouse.GetState().LeftButton == ButtonState.Pressed && lastMouse.LeftButton == ButtonState.Released)
             {
                 //If mouse within window
-                if(Mouse.GetState().Position.X > 0 && Mouse.GetState().Position.X < windowWidth)
+                if (Mouse.GetState().Position.X > 0 && Mouse.GetState().Position.X < windowWidth)
                 {
                     if (Mouse.GetState().Position.Y > 0 && Mouse.GetState().Position.Y < windowHeight)
                     {
-                        //Convert mouse position to tile position
-                        int boardPosY = (int)Mouse.GetState().Position.X / tileWidth;
-                        int boardPosX = (int)Mouse.GetState().Position.Y / tileHeight;
-                        if (curSelect.X == -1) //No piece selected
+                        if (state == 0) //Play game
                         {
-                            if (board.getPos(boardPosX, boardPosY) != 0)
+                            //Convert mouse position to tile position
+                            int boardPosY = (int)Mouse.GetState().Position.X / tileWidth;
+                            int boardPosX = (int)Mouse.GetState().Position.Y / tileHeight;
+                            if (curSelect.X == -1) //No piece selected
                             {
-                                curSelect.X = boardPosX;
-                                curSelect.Y = boardPosY;
-                                render.setHighlights(new Vector2[] {curSelect});
-                                System.Console.WriteLine(curSelect.ToString());
+                                if (board.getPos(boardPosX, boardPosY) != 0)
+                                {
+                                    curSelect.X = boardPosX;
+                                    curSelect.Y = boardPosY;
+                                    render.setHighlights(new Vector2[] { curSelect });
+                                    System.Console.WriteLine(curSelect.ToString());
+                                }
+                            }
+                            else //Piece previously selected
+                            {
+                                if (curSelect != new Vector2(boardPosX, boardPosY))
+                                {
+                                    board.tryMove((int)curSelect.X, (int)curSelect.Y, boardPosX, boardPosY);
+                                }
+                                curSelect = new Vector2(-1, -1);
+                                render.setHighlights(new Vector2[] { curSelect });
                             }
                         }
-                        else //Piece previously selected
+                        else if (state == 1)//In-game menu
                         {
-                            if (curSelect != new Vector2(boardPosX, boardPosY))
-                            {
-                                board.tryMove((int)curSelect.X, (int)curSelect.Y, boardPosX, boardPosY);
+                            if(continueButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1,1))){
+                                state = 0;
                             }
-                            curSelect = new Vector2(-1, -1);
-                            render.setHighlights(new Vector2[] { curSelect });
+                            if (quitButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1)))
+                            {
+                                Exit();
+                            }
                         }
                     }
-                }
-                
+                }         
             }
 
+            lastKey = Keyboard.GetState();
             lastMouse = Mouse.GetState();
             base.Update(gameTime);
         }
@@ -110,6 +146,13 @@ namespace UC_Chess
 
             spriteBatch.Begin();
             render.renderBoard(board, spriteBatch);
+            if (state == 1)
+            {
+                //render.renderGUI(guiElements?, spriteBatch);
+                spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(0,0,windowWidth,windowHeight), new Color(50,50,50,150));
+                spriteBatch.Draw(AssetManager.getTex("tile"), continueButton, Color.ForestGreen);
+                spriteBatch.Draw(AssetManager.getTex("tile"), quitButton, Color.Red);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
