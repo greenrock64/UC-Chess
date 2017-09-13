@@ -6,29 +6,30 @@ namespace UC_Chess
 {
     public class Core : Game
     {
+        //Graphics Variables
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
         //Temporary variables for screen sizes
         int windowWidth = 512;
         int windowHeight = 512;
         int tileWidth = 512 / 8;
         int tileHeight = 512 / 8;
 
-
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
+        //Logic Variables
         Chess board;
 
+        //Input Variables
         MouseState lastMouse;
         Vector2 curSelect;
 
         public Core()
         {
             graphics = new GraphicsDeviceManager(this);
-
-            this.IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = windowWidth;
             graphics.PreferredBackBufferHeight = windowHeight;
             graphics.ApplyChanges();
+
+            this.IsMouseVisible = true;
 
             Content.RootDirectory = "Content";
         }
@@ -40,6 +41,8 @@ namespace UC_Chess
             //Debug board display
             //board.printBoard();
 
+            //Which tile the user has selected
+            //Defaults to off board when nothing selected
             curSelect = new Vector2(-1, -1);
             base.Initialize();
         }
@@ -47,7 +50,6 @@ namespace UC_Chess
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //TODO: Move to dedicated assetLoader class
             AssetManager.load(Content);
         }
 
@@ -58,19 +60,21 @@ namespace UC_Chess
 
         protected override void Update(GameTime gameTime)
         {
+            //Input
+            //TODO: Input handler class?
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            //Clicking and moving chess pieces
             if(Mouse.GetState().LeftButton == ButtonState.Pressed && lastMouse.LeftButton == ButtonState.Released)
             {
+                //If mouse within window
                 if(Mouse.GetState().Position.X > 0 && Mouse.GetState().Position.X < windowWidth)
                 {
                     if (Mouse.GetState().Position.Y > 0 && Mouse.GetState().Position.Y < windowHeight)
                     {
+                        //Convert mouse position to tile position
                         int boardPosY = (int)Mouse.GetState().Position.X / tileWidth;
                         int boardPosX = (int)Mouse.GetState().Position.Y / tileHeight;
-                        if (curSelect.X == -1)
+                        if (curSelect.X == -1) //No piece selected
                         {
                             if (board.getPos(boardPosX, boardPosY) != 0)
                             {
@@ -79,7 +83,7 @@ namespace UC_Chess
                                 System.Console.WriteLine(curSelect.ToString());
                             }
                         }
-                        else
+                        else //Piece previously selected
                         {
                             if (curSelect != new Vector2(boardPosX, boardPosY))
                             {
@@ -93,7 +97,6 @@ namespace UC_Chess
             }
 
             lastMouse = Mouse.GetState();
-
             base.Update(gameTime);
         }
 
@@ -110,6 +113,7 @@ namespace UC_Chess
             {
                 for(int u = 0; u < 8; u++)
                 {
+                    //Math to alternate tile checkering
                     if (i % 2 > 0 && u % 2 == 0)
                     {
                         spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
@@ -122,6 +126,7 @@ namespace UC_Chess
                     {
                         spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                     }
+                    //If the tile is selected by the user, make it crimson
                     if (u == curSelect.X && i == curSelect.Y)
                     {
                         spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Crimson);
