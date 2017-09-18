@@ -97,8 +97,8 @@ namespace UC_Chess
                 board[i, 2] = 3;
                 board[i, 3] = 5;
                 board[i, 4] = 6;
-                board[i, 5] = 4;
-                board[i, 6] = 3;
+                board[i, 5] = 3;
+                board[i, 6] = 4;
                 board[i, 7] = 2;
             }
             else //Black Pieces
@@ -108,8 +108,8 @@ namespace UC_Chess
                 board[i, 2] = 9;
                 board[i, 3] = 11;
                 board[i, 4] = 12;
-                board[i, 5] = 10;
-                board[i, 6] = 9;
+                board[i, 5] = 9;
+                board[i, 6] = 10;
                 board[i, 7] = 8;
             }
 
