@@ -106,8 +106,8 @@ namespace UC_Chess
                 board[i, 0] = 8;
                 board[i, 1] = 9;
                 board[i, 2] = 10;
-                board[i, 3] = 12;
-                board[i, 4] = 11;
+                board[i, 3] = 11;
+                board[i, 4] = 12;
                 board[i, 5] = 10;
                 board[i, 6] = 9;
                 board[i, 7] = 8;
