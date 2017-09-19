@@ -93,23 +93,23 @@ namespace UC_Chess
             if(i == 0) //White Pieces
             {
                 board[i, 0] = 2;
-                board[i, 1] = 3;
-                board[i, 2] = 4;
+                board[i, 1] = 4;
+                board[i, 2] = 3;
                 board[i, 3] = 5;
                 board[i, 4] = 6;
-                board[i, 5] = 4;
-                board[i, 6] = 3;
+                board[i, 5] = 3;
+                board[i, 6] = 4;
                 board[i, 7] = 2;
             }
             else //Black Pieces
             {
                 board[i, 0] = 8;
-                board[i, 1] = 9;
-                board[i, 2] = 10;
-                board[i, 3] = 12;
-                board[i, 4] = 11;
-                board[i, 5] = 10;
-                board[i, 6] = 9;
+                board[i, 1] = 10;
+                board[i, 2] = 9;
+                board[i, 3] = 11;
+                board[i, 4] = 12;
+                board[i, 5] = 9;
+                board[i, 6] = 10;
                 board[i, 7] = 8;
             }
 
