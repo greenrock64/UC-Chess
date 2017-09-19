@@ -142,11 +142,11 @@ namespace UC_Chess
                 {
                     if (i % 2 > 0 && u % 2 == 0)
                     {
-                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Gray);
                     }
                     else if (i % 2 == 0 && u % 2 > 0)
                     {
-                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(tempTile, new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Gray);
                     }
                     else
                     {
