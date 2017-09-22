@@ -18,7 +18,7 @@ using System.Threading.Tasks;
  * 10 - B Knight
  * 11 - B Queen
  * 12 - B King
- */ 
+ */
 
 namespace UC_Chess
 {
@@ -47,16 +47,189 @@ namespace UC_Chess
         public bool tryMove(int x, int y, int newX, int newY)
         {
             //If there is a piece to move
-            if(board[x,y] != 0)
+            if (board[x, y] != 0) //y==x x==y
             {
-                //Successfully move piece
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
-                return true;
+                //to-do classes for each piece
+                switch (board[x, y])
+                {
+                    case 1: //pawn movement. to-do move to own class for all cases. to-do taking pieces 
+                        pawn(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 2: //castle movement. to-do check for movement being blocked
+                        castle(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 3: //Bishop movement
+                        bishop(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 4: //Knight movement 
+                        knight(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 5: //queen movement
+                        queen(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 6: //king movement
+                        king(x, y, newX, newY);
+                        break;
+                    case 7: //black pawn
+                        blackpawn(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 8: //black castle
+                        castle(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 9: //black Bishop
+                        bishop(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 10: // black knight
+                        knight(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 11: // black queen
+                        queen(x, y, newX, newY);
+                        return true;
+                        break;
+                    case 12: //black king
+                        king(x, y, newX, newY);
+                        return true;
+                        break;
+                }
+
             }
             return false;
         }
-
+        public void pawn(int x, int y, int newX, int newY)
+        {
+            if (x == 1) //  need to fix
+            {
+                if ((x == newX - 1 || x == newX - 2) && y == newY) //the possible double move for that pawns first move
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = 0;
+                }
+            }
+            else if (x == newX - 1 && y == newY) //normal movement
+            {
+                if (x == newX - 1 && y == newY)
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = 0;
+                }
+            }
+        }
+        public void blackpawn(int x, int y, int newX, int newY) //need to fix
+        {
+            /*
+            if (board[(x + 1), (y + 1)] != 0 || board[(x + 1), (y - 1)] != 0)
+            {
+                if (board[(x + 1), (y + 1)] <= 6 || board[(x + 1), (y - 1)] <= 6)
+                {
+                    
+                }
+            } */
+            if (x == 6)
+            {
+                if ((x == newX + 1 || x == newX + 2) && y == newY)
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = 0;
+                }
+            }
+            else if (x == newX + 1 && y == newY)
+            {
+                if (x == newX + 1 && y == newY)
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = 0;
+                }
+            }
+        }
+        public void castle(int x, int y, int newX, int newY)
+        {
+            if (y != newY && x == newX) //for moving left and right
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+            if (x != newX && y == newY) //for up and down
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+        }
+        public void bishop(int x, int y, int newX, int newY)
+        {
+            int n, k;
+            n = newX - x;
+            k = newY - y;
+            n = Math.Abs(n); //take absolute value because negatives mess things up
+            k = Math.Abs(k);
+            if (n == k) //makes sure that things stay on the diagonal
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+        }
+        public void queen(int x, int y, int newX, int newY)
+        {
+            int n, k; //queen is castle and bishop rolled up into one
+            n = newX - x;
+            k = newY - y;
+            n = Math.Abs(n);
+            k = Math.Abs(k);
+            if (n == k)
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+            if (y != newY && x == newX) //for moving left and right.Probably could be put into one if
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+            if (x != newX && y == newY) //for up and down
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+        }
+        public void king(int x, int y, int newX, int newY)
+        {
+            if (x >= -1 && x <= 1 && y >= -1 && y <= 1)
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+        }
+        public void knight(int x, int y, int newX, int newY)
+        {
+            if (y == newY - 2 && (x == newX - 1 || x == newX + 1)) //this one is a b***h. Could do with some fixing up
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+            else if (y == newY + 2 && (x == newX - 1 || x == newX + 1))
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+            else if (x == newX + 2 && (y == newY - 1 || y == newY + 1))
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+            else if (x == newX - 2 && (y == newY - 1 || y == newY + 1))
+            {
+                board[newX, newY] = board[x, y];
+                board[x, y] = 0;
+            }
+        }
         /// <summary>
         /// Set the initial pieces on the board
         /// </summary>
@@ -81,7 +254,7 @@ namespace UC_Chess
                         }
                     }
                     //Set core pieces
-                    if(i == 0 || i == 7)
+                    if (i == 0 || i == 7)
                     {
                         setFrontRow(board, i);
                     }
@@ -90,7 +263,7 @@ namespace UC_Chess
         }
         public void setFrontRow(int[,] board, int i)
         {
-            if(i == 0) //White Pieces
+            if (i == 0) //White Pieces
             {
                 board[i, 0] = 2;
                 board[i, 1] = 4;
