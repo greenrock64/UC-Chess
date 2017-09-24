@@ -9,15 +9,15 @@ using System.Threading.Tasks;
  * 2 - W Castle
  * 3 - W Bishop
  * 4 - W Knight
- * 5 - W Queen
- * 6 - W King
+ * 5 - W King
+ * 6 - W Queen
  * 
  * 7 - B Pawn
  * 8 - B Castle
  * 9 - B Bishop
  * 10 - B Knight
- * 11 - B Queen
- * 12 - B King
+ * 11 - B King
+ * 12 - B Queen
  */
 
 namespace UC_Chess
@@ -181,7 +181,7 @@ namespace UC_Chess
                 board[x, y] = 0;
             }
         }
-        public void queen(int x, int y, int newX, int newY)
+        public void king(int x, int y, int newX, int newY)
         {
             int n, k; //queen is castle and bishop rolled up into one
             n = newX - x;
@@ -204,20 +204,20 @@ namespace UC_Chess
                 board[x, y] = 0;
             }
         }
-        public void king(int x, int y, int newX, int newY)
+        public void queen(int x, int y, int newX, int newY)
         {
             if ((Math.Abs(x - newX) == 1 && Math.Abs(y - newY) == 1) || (Math.Abs(x - newX) == 1 && newY == y) || (Math.Abs(y - newY) == 1 && newX == x)) //not broken but it looks bad
             {
-                if (board[x, y] == 6) //white king
+                if (board[x, y] == 5) //white king
                 {
                     if (board[newX, newY] > 6 || board[newX, newY] == 0)//Is a black piece
                     {
                         movePiece(x, y, newX, newY);
                     }
                 }
-                else if (board[x, y] == 12) //black king
+                else if (board[x, y] == 11) //black king
                 {
-                    if (board[newX, newY] <= 6 && board[newX, newY] == 0)//Is a white piece
+                    if (board[newX, newY] <= 6 || board[newX, newY] == 0)//Is a white piece
                     {
                         movePiece(x, y, newX, newY);
                     }
