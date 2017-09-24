@@ -116,23 +116,12 @@ namespace UC_Chess
             }
             else if (x == newX - 1 && y == newY) //normal movement
             {
-                if (x == newX - 1 && y == newY)
-                {
                     board[newX, newY] = board[x, y];
                     board[x, y] = 0;
-                }
             }
         }
         public void blackpawn(int x, int y, int newX, int newY) //need to fix
         {
-            /*
-            if (board[(x + 1), (y + 1)] != 0 || board[(x + 1), (y - 1)] != 0)
-            {
-                if (board[(x + 1), (y + 1)] <= 6 || board[(x + 1), (y - 1)] <= 6)
-                {
-                    
-                }
-            } */
             if (x == 6)
             {
                 if ((x == newX + 1 || x == newX + 2) && y == newY)
@@ -143,12 +132,20 @@ namespace UC_Chess
             }
             else if (x == newX + 1 && y == newY)
             {
-                if (x == newX + 1 && y == newY)
-                {
                     board[newX, newY] = board[x, y];
                     board[x, y] = 0;
-                }
             }
+            else if (board[(x + 1), (y + 1)] != 0 || board[(x + 1), (y - 1)] != 0) //doesnt work and I'm not sure why
+            {
+                if (board[(x + 1), (y + 1)] <= 6 || board[(x + 1), (y - 1)] <= 6) // make sure it isnt a black piece
+                {
+                    if ((x == newX + 1 && y == newY + 1) || (x == newX + 1 && y == newY - 1))
+                    {
+                        board[newX, newY] = board[x, y];
+                        board[x, y] = 0;
+                    }
+                }
+            } 
         }
         public void castle(int x, int y, int newX, int newY)
         {
@@ -201,7 +198,7 @@ namespace UC_Chess
         }
         public void king(int x, int y, int newX, int newY)
         {
-            if (x >= -1 && x <= 1 && y >= -1 && y <= 1)
+            if (x >= -1 && x <= 1 || y >= -1 && y <= 1) //king is broke
             {
                 board[newX, newY] = board[x, y];
                 board[x, y] = 0;
