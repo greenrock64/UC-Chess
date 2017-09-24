@@ -104,48 +104,56 @@ namespace UC_Chess
             }
             return false;
         }
+        /// <summary>
+        /// Moves a piece to a new position
+        /// </summary>
+        private void movePiece(int x, int y, int newX, int newY)
+        {
+            board[newX, newY] = board[x, y];
+            board[x, y] = 0;
+        }
+
         public void pawn(int x, int y, int newX, int newY)
         {
-            if (x == 1) //  need to fix
+            if (newX == x + 1 && newY == y)//Forward 1 square
             {
-                if ((x == newX - 1 || x == newX - 2) && y == newY) //the possible double move for that pawns first move
+                if (board[newX, newY] == 0)//No piece ahead
                 {
-                    board[newX, newY] = board[x, y];
-                    board[x, y] = 0;
+                    movePiece(x, y, newX, newY);
                 }
             }
-            else if (x == newX - 1 && y == newY) //normal movement
+            else if (x == 1 && (newX == x + 2 && newY == y)) //Pawn at starting pos and is moving 2 squares
             {
-                    board[newX, newY] = board[x, y];
-                    board[x, y] = 0;
+                movePiece(x, y, newX, newY);
+            }
+            else if (newX == x + 1 && Math.Abs(y - newY) == 1)//Diagonal
+            {
+                if (board[newX, newY] > 6)//Is a white piece
+                {
+                    movePiece(x, y, newX, newY);
+                }
             }
         }
-        public void blackpawn(int x, int y, int newX, int newY) //need to fix
+        public void blackpawn(int x, int y, int newX, int newY)
         {
-            if (x == 6)
+            if (newX == x - 1 && newY == y)//Forward 1 square
             {
-                if ((x == newX + 1 || x == newX + 2) && y == newY)
+                if (board[newX, newY] == 0)//No piece ahead
                 {
-                    board[newX, newY] = board[x, y];
-                    board[x, y] = 0;
+                    movePiece(x, y, newX, newY);
                 }
             }
-            else if (x == newX + 1 && y == newY)
+            else if (x == 6 && (newX == x - 2 && newY == y)) //Pawn at starting pos and is moving 2 squares
             {
-                    board[newX, newY] = board[x, y];
-                    board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
-            else if (board[(x + 1), (y + 1)] != 0 || board[(x + 1), (y - 1)] != 0) //doesnt work and I'm not sure why
+            else if (newX == x - 1 && Math.Abs(y-newY) == 1)//Diagonal
             {
-                if (board[(x + 1), (y + 1)] <= 6 || board[(x + 1), (y - 1)] <= 6) // make sure it isnt a black piece
+                if (board[newX, newY] <= 6 && board[newX, newY] != 0)//Is a white piece
                 {
-                    if ((x == newX + 1 && y == newY + 1) || (x == newX + 1 && y == newY - 1))
-                    {
-                        board[newX, newY] = board[x, y];
-                        board[x, y] = 0;
-                    }
+                    movePiece(x, y, newX, newY);
                 }
-            } 
+            }
         }
         public void castle(int x, int y, int newX, int newY)
         {
