@@ -128,7 +128,7 @@ namespace UC_Chess
             }
             else if (newX == x + 1 && Math.Abs(y - newY) == 1)//Diagonal
             {
-                if (board[newX, newY] > 6)//Is a white piece
+                if (board[newX, newY] > 6)//Is a black piece
                 {
                     movePiece(x, y, newX, newY);
                 }
@@ -206,10 +206,22 @@ namespace UC_Chess
         }
         public void king(int x, int y, int newX, int newY)
         {
-            if (x >= -1 && x <= 1 || y >= -1 && y <= 1) //king is broke
+            if ((Math.Abs(x - newX) == 1 && Math.Abs(y - newY) == 1) || (Math.Abs(x - newX) == 1 && newY == y) || (Math.Abs(y - newY) == 1 && newX == x)) //not broken but it looks bad
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                if (board[x, y] == 6) //white king
+                {
+                    if (board[newX, newY] > 6 || board[newX, newY] == 0)//Is a black piece
+                    {
+                        movePiece(x, y, newX, newY);
+                    }
+                }
+                else if (board[x, y] == 12) //black king
+                {
+                    if (board[newX, newY] <= 6 && board[newX, newY] == 0)//Is a white piece
+                    {
+                        movePiece(x, y, newX, newY);
+                    }
+                }
             }
         }
         public void knight(int x, int y, int newX, int newY)
