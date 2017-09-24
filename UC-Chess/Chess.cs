@@ -68,12 +68,12 @@ namespace UC_Chess
                         knight(x, y, newX, newY);
                         return true;
                         break;
-                    case 5: //queen movement
-                        queen(x, y, newX, newY);
+                    case 5: //king movement
+                        king(x, y, newX, newY);
                         return true;
                         break;
-                    case 6: //king movement
-                        king(x, y, newX, newY);
+                    case 6: //queen movement
+                        queen(x, y, newX, newY);
                         break;
                     case 7: //black pawn
                         blackpawn(x, y, newX, newY);
@@ -91,12 +91,12 @@ namespace UC_Chess
                         knight(x, y, newX, newY);
                         return true;
                         break;
-                    case 11: // black queen
-                        queen(x, y, newX, newY);
+                    case 11: // black king
+                        king(x, y, newX, newY);
                         return true;
                         break;
-                    case 12: //black king
-                        king(x, y, newX, newY);
+                    case 12: //black queen
+                        queen(x, y, newX, newY);
                         return true;
                         break;
                 }
@@ -181,7 +181,7 @@ namespace UC_Chess
                 board[x, y] = 0;
             }
         }
-        public void king(int x, int y, int newX, int newY)
+        public void queen(int x, int y, int newX, int newY)
         {
             int n, k; //queen is castle and bishop rolled up into one
             n = newX - x;
@@ -204,7 +204,7 @@ namespace UC_Chess
                 board[x, y] = 0;
             }
         }
-        public void queen(int x, int y, int newX, int newY)
+        public void king(int x, int y, int newX, int newY)
         {
             if ((Math.Abs(x - newX) == 1 && Math.Abs(y - newY) == 1) || (Math.Abs(x - newX) == 1 && newY == y) || (Math.Abs(y - newY) == 1 && newX == x)) //not broken but it looks bad
             {
