@@ -109,8 +109,22 @@ namespace UC_Chess
         /// </summary>
         private void movePiece(int x, int y, int newX, int newY)
         {
-            board[newX, newY] = board[x, y];
-            board[x, y] = 0;
+            if (board[x, y] <= 6 || board[x, y] == 0) //white piece
+            {
+                if (board[newX, newY] > 6 || board[newX, newY] == 0)//Is a black piece
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = 0;
+                }
+            }
+            else if (board[x, y] > 6 || board[x, y] == 0) //Black piece
+            {
+                if (board[newX, newY] <= 6 || board[newX, newY] == 0)//Is a white piece
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = 0;
+                }
+            }
         }
 
         public void pawn(int x, int y, int newX, int newY)
@@ -157,15 +171,9 @@ namespace UC_Chess
         }
         public void castle(int x, int y, int newX, int newY)
         {
-            if (y != newY && x == newX) //for moving left and right
+            if ((y != newY && x == newX) || (x != newX && y == newY)) //for moving left and right and up and down
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
-            }
-            if (x != newX && y == newY) //for up and down
-            {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
         }
         public void bishop(int x, int y, int newX, int newY)
@@ -177,8 +185,7 @@ namespace UC_Chess
             k = Math.Abs(k);
             if (n == k) //makes sure that things stay on the diagonal
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
         }
         public void queen(int x, int y, int newX, int newY)
@@ -188,53 +195,27 @@ namespace UC_Chess
             k = newY - y;
             n = Math.Abs(n);
             k = Math.Abs(k);
-            if (n == k)
+            if ((n == k) || (y != newY && x == newX) || (x != newX && y == newY))
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
-            }
-            if (y != newY && x == newX) //for moving left and right.Probably could be put into one if
-            {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
-            }
-            if (x != newX && y == newY) //for up and down
-            {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
         }
         public void king(int x, int y, int newX, int newY)
         {
             if ((Math.Abs(x - newX) == 1 && Math.Abs(y - newY) == 1) || (Math.Abs(x - newX) == 1 && newY == y) || (Math.Abs(y - newY) == 1 && newX == x)) //not broken but it looks bad
             {
-                if (board[x, y] == 5) //white king
-                {
-                    if (board[newX, newY] > 6 || board[newX, newY] == 0)//Is a black piece
-                    {
-                        movePiece(x, y, newX, newY);
-                    }
-                }
-                else if (board[x, y] == 11) //black king
-                {
-                    if (board[newX, newY] <= 6 || board[newX, newY] == 0)//Is a white piece
-                    {
-                        movePiece(x, y, newX, newY);
-                    }
-                }
+                movePiece(x, y, newX, newY);
             }
         }
         public void knight(int x, int y, int newX, int newY)
         {
             if (y == newY - 2 && (x == newX - 1 || x == newX + 1)) //this one is a b***h. Could do with some fixing up
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
             else if (y == newY + 2 && (x == newX - 1 || x == newX + 1))
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
             else if (x == newX + 2 && (y == newY - 1 || y == newY + 1))
             {
@@ -243,8 +224,7 @@ namespace UC_Chess
             }
             else if (x == newX - 2 && (y == newY - 1 || y == newY + 1))
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
         }
         /// <summary>
