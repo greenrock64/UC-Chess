@@ -27,8 +27,9 @@ namespace UC_Chess
         //Input state variables (test)
         int state;
         //Temp GUI Elements
-        Rectangle continueButton = new Rectangle(231, 200, 50, 25);
-        Rectangle quitButton = new Rectangle(231, 250, 50, 25);
+        Rectangle continueButton = new Rectangle(231, 175, 50, 25);
+        Rectangle resetButton = new Rectangle(231, 225, 50, 25);
+        Rectangle quitButton = new Rectangle(231, 275, 50, 25);
 
         public Core()
         {
@@ -123,6 +124,11 @@ namespace UC_Chess
                             if(continueButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1,1))){
                                 state = 0;
                             }
+                            if (resetButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1)))
+                            {
+                                board = new Chess();
+                                state = 0;
+                            }
                             if (quitButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1)))
                             {
                                 Exit();
@@ -149,6 +155,7 @@ namespace UC_Chess
                 //render.renderGUI(guiElements?, spriteBatch);
                 spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(0,0,windowWidth,windowHeight), new Color(50,50,50,150));
                 spriteBatch.Draw(AssetManager.getTex("tile"), continueButton, Color.ForestGreen);
+                spriteBatch.Draw(AssetManager.getTex("tile"), resetButton, Color.Orange);
                 spriteBatch.Draw(AssetManager.getTex("tile"), quitButton, Color.Red);
             }
             spriteBatch.End();
