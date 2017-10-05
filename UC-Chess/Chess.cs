@@ -24,18 +24,18 @@ namespace UC_Chess
 {
     class Chess
     {
-        int[,] board;
+        Piece[,] board;
         public Chess()
         {
             //Instantiate the board as an 8x8 array
-            board = new int[8, 8];
+            board = new Piece[8, 8];
             setBoard(board);
         }
 
         /// <summary>
         /// Returns the piece at location X,Y
         /// </summary>
-        public int getPos(int x, int y)
+        public Piece getPos(int x, int y)
         {
             return board[x, y];
         }
@@ -47,57 +47,35 @@ namespace UC_Chess
         public bool tryMove(int x, int y, int newX, int newY)
         {
             //If there is a piece to move
-            if (board[x, y] != 0) //y==x x==y
+            if (board[x, y] != null) //y==x x==y
             {
                 //to-do classes for each piece
-                switch (board[x, y])
+                switch (board[x, y].pieceType)
                 {
-                    case 1: //pawn movement. to-do move to own class for all cases. to-do taking pieces 
-                        pawn(x, y, newX, newY);
-                        return true;
+                    case "pawn":
+                        if (board[x, y].playerSide == 0)
+                        {
+                            pawn(x, y, newX, newY);
+                        }
+                        else
+                        {
+                            blackpawn(x, y, newX, newY);
+                        }
                         break;
-                    case 2: //castle movement. to-do check for movement being blocked
-                        castle(x, y, newX, newY);
-                        return true;
-                        break;
-                    case 3: //Bishop movement
+                    case "bishop":
                         bishop(x, y, newX, newY);
-                        return true;
                         break;
-                    case 4: //Knight movement 
+                    case "knight":
                         knight(x, y, newX, newY);
-                        return true;
                         break;
-                    case 5: //king movement
-                        king(x, y, newX, newY);
-                        return true;
-                        break;
-                    case 6: //queen movement
-                        queen(x, y, newX, newY);
-                        break;
-                    case 7: //black pawn
-                        blackpawn(x, y, newX, newY);
-                        return true;
-                        break;
-                    case 8: //black castle
+                    case "castle":
                         castle(x, y, newX, newY);
-                        return true;
                         break;
-                    case 9: //black Bishop
-                        bishop(x, y, newX, newY);
-                        return true;
-                        break;
-                    case 10: // black knight
-                        knight(x, y, newX, newY);
-                        return true;
-                        break;
-                    case 11: // black king
+                    case "king":
                         king(x, y, newX, newY);
-                        return true;
                         break;
-                    case 12: //black queen
+                    case "queen":
                         queen(x, y, newX, newY);
-                        return true;
                         break;
                 }
 
@@ -109,20 +87,30 @@ namespace UC_Chess
         /// </summary>
         private void movePiece(int x, int y, int newX, int newY)
         {
-            if (board[x, y] <= 6 || board[x, y] == 0) //white piece
+            if (board[x, y].playerSide == 0) //white piece
             {
-                if (board[newX, newY] > 6 || board[newX, newY] == 0)//Is a black piece
+                if (board[newX, newY] == null)
                 {
                     board[newX, newY] = board[x, y];
-                    board[x, y] = 0;
+                    board[x, y] = null;
+                }
+                else if (board[newX, newY].playerSide == 1)
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = null;
                 }
             }
-            else if (board[x, y] > 6 || board[x, y] == 0) //Black piece
+            else if (board[x, y].playerSide == 1) //Black piece
             {
-                if (board[newX, newY] <= 6 || board[newX, newY] == 0)//Is a white piece
+                if (board[newX, newY] == null)
                 {
                     board[newX, newY] = board[x, y];
-                    board[x, y] = 0;
+                    board[x, y] = null;
+                }
+                else if (board[newX, newY].playerSide == 0)
+                {
+                    board[newX, newY] = board[x, y];
+                    board[x, y] = null;
                 }
             }
         }
@@ -131,7 +119,7 @@ namespace UC_Chess
         {
             if (newX == x + 1 && newY == y)//Forward 1 square
             {
-                if (board[newX, newY] == 0)//No piece ahead
+                if (board[newX, newY] == null)//No piece ahead
                 {
                     movePiece(x, y, newX, newY);
                 }
@@ -142,7 +130,7 @@ namespace UC_Chess
             }
             else if (newX == x + 1 && Math.Abs(y - newY) == 1)//Diagonal
             {
-                if (board[newX, newY] > 6)//Is a black piece
+                if (board[newX, newY] != null)//Is an occupied tile
                 {
                     movePiece(x, y, newX, newY);
                 }
@@ -152,7 +140,7 @@ namespace UC_Chess
         {
             if (newX == x - 1 && newY == y)//Forward 1 square
             {
-                if (board[newX, newY] == 0)//No piece ahead
+                if (board[newX, newY] == null)//No piece ahead
                 {
                     movePiece(x, y, newX, newY);
                 }
@@ -163,7 +151,7 @@ namespace UC_Chess
             }
             else if (newX == x - 1 && Math.Abs(y-newY) == 1)//Diagonal
             {
-                if (board[newX, newY] <= 6 && board[newX, newY] != 0)//Is a white piece
+                if (board[newX, newY] != null)//Is an occupied tile
                 {
                     movePiece(x, y, newX, newY);
                 }
@@ -219,8 +207,7 @@ namespace UC_Chess
             }
             else if (x == newX + 2 && (y == newY - 1 || y == newY + 1))
             {
-                board[newX, newY] = board[x, y];
-                board[x, y] = 0;
+                movePiece(x, y, newX, newY);
             }
             else if (x == newX - 2 && (y == newY - 1 || y == newY + 1))
             {
@@ -230,7 +217,7 @@ namespace UC_Chess
         /// <summary>
         /// Set the initial pieces on the board
         /// </summary>
-        public void setBoard(int[,] board)
+        public void setBoard(Piece[,] board)
         {
             //Row
             for (int i = 0; i < 8; i++)
@@ -243,11 +230,11 @@ namespace UC_Chess
                     {
                         if (i == 1)
                         {
-                            board[i, u] = 1;
+                            board[i, u] = new Piece("pawn", 0);
                         }
                         else
                         {
-                            board[i, u] = 7;
+                            board[i, u] = new Piece("pawn", 1);
                         }
                     }
                     //Set core pieces
@@ -258,29 +245,29 @@ namespace UC_Chess
                 }
             }
         }
-        public void setFrontRow(int[,] board, int i)
+        public void setFrontRow(Piece[,] board, int i)
         {
             if (i == 0) //White Pieces
             {
-                board[i, 0] = 2;
-                board[i, 1] = 4;
-                board[i, 2] = 3;
-                board[i, 3] = 5;
-                board[i, 4] = 6;
-                board[i, 5] = 3;
-                board[i, 6] = 4;
-                board[i, 7] = 2;
+                board[i, 0] = new Piece("castle", 0);
+                board[i, 1] = new Piece("knight", 0);
+                board[i, 2] = new Piece("bishop", 0);
+                board[i, 3] = new Piece("king", 0);
+                board[i, 4] = new Piece("queen", 0);
+                board[i, 5] = new Piece("bishop", 0);
+                board[i, 6] = new Piece("knight", 0);
+                board[i, 7] = new Piece("castle", 0);
             }
             else //Black Pieces
             {
-                board[i, 0] = 8;
-                board[i, 1] = 10;
-                board[i, 2] = 9;
-                board[i, 3] = 11;
-                board[i, 4] = 12;
-                board[i, 5] = 9;
-                board[i, 6] = 10;
-                board[i, 7] = 8;
+                board[i, 0] = new Piece("castle", 1);
+                board[i, 1] = new Piece("knight", 1);
+                board[i, 2] = new Piece("bishop", 1);
+                board[i, 3] = new Piece("king", 1);
+                board[i, 4] = new Piece("queen", 1);
+                board[i, 5] = new Piece("bishop", 1);
+                board[i, 6] = new Piece("knight", 1);
+                board[i, 7] = new Piece("castle", 1);
             }
 
         }

@@ -101,7 +101,7 @@ namespace UC_Chess
                             int boardPosX = (int)Mouse.GetState().Position.Y / tileHeight;
                             if (curSelect.X == -1) //No piece selected
                             {
-                                if (board.getPos(boardPosX, boardPosY) != 0)
+                                if (board.getPos(boardPosX, boardPosY) != null)
                                 {
                                     curSelect.X = boardPosX;
                                     curSelect.Y = boardPosY;
