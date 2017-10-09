@@ -53,14 +53,41 @@ namespace UC_Chess
             switch (board[x, y].pieceType)
             {
                 case "pawn":
-                    if (board[x, y].playerSide == 0)
+                    //Set which direction the pawn can go (black/white piece)
+                    int dir = (board[x,y].playerSide == 0) ? 1:-1;
+                    //Check board boundaries
+                    if (x + dir < 8 && x + dir >= 0)
                     {
-
+                        //Forward 1 square
+                        if (board[x + dir, y] == null)//No piece ahead
+                        {
+                            tryPossibleMove(x + dir, y, possibleMoves, board[x, y].playerSide);
+                        }
+                        //Diagonals
+                        if (y - 1 >= 0)
+                        {
+                            if (board[x + dir, y - 1] != null) //Piece ahead
+                            {
+                                tryPossibleMove(x + dir, y - 1, possibleMoves, board[x, y].playerSide);
+                            }
+                        }
+                        if (y + 1 < 8)
+                        {
+                            if (board[x + dir, y + 1] != null)
+                            {
+                                tryPossibleMove(x + dir, y + 1, possibleMoves, board[x, y].playerSide);
+                            }
+                        }
                     }
-                    else
+                    /*TODO: Add hasMoved flag to piece class
+                    //Forward 2 squares
+                    if (x + 2*dir < 8 && x + 2*dir >= 0)
                     {
-
-                    }
+                        if (Piece.hasMoved == false) //Pawn at starting pos and is moving 2 squares
+                        {
+                            tryPossibleMove(x + 2, y, possibleMoves, board[x, y].playerSide);
+                        }
+                    }*/
                     break;
                 case "bishop":
 
@@ -93,19 +120,19 @@ namespace UC_Chess
                 case "castle":
                     for (int i = x + 1; i < 8; i++)
                     {
-                        if (!addPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
+                        if (!tryPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
                     }
                     for (int i = x - 1; i >= 0; i--)
                     {
-                        if (!addPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
+                        if (!tryPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
                     }
                     for (int i = y + 1; i < 8; i++)
                     {
-                        if (!addPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
+                        if (!tryPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
                     }
                     for (int i = y - 1; i >= 0; i--)
                     {
-                        if (!addPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
+                        if (!tryPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
                     }
                     break;
                 case "king":
@@ -118,7 +145,7 @@ namespace UC_Chess
             return possibleMoves.ToArray();
         }
 
-        public bool addPossibleMove(int x, int y, List<Vector2> possibleMoves, int colour)
+        public bool tryPossibleMove(int x, int y, List<Vector2> possibleMoves, int colour)
         {
             if (isValidMove(colour, x, y))
             {
