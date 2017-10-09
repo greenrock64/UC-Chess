@@ -15,6 +15,8 @@ namespace UC_Chess
         public static void load(ContentManager Content)
         {
             add("tile", Content.Load<Texture2D>("tile"));
+            add("error", Content.Load<Texture2D>("missingTexture"));
+
             add("blackPawn", Content.Load<Texture2D>("blackPawn"));
             add("blackCastle", Content.Load<Texture2D>("blackRook"));
             add("blackBishop", Content.Load<Texture2D>("blackBishop"));
@@ -41,7 +43,6 @@ namespace UC_Chess
             }
             else
             {
-                //TODO: Add an error texture, this just crashes
                 return textureDictionary["error"];
             }
         }

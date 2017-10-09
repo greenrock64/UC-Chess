@@ -63,47 +63,9 @@ namespace UC_Chess
 
                     //}
 
-                    //TODO: More efficient (piece class?)
-                    switch (board.getPos(u, i))
+                    if (board.getPos(u, i) != null)
                     {
-                        case 1:
-                            spriteBatch.Draw(AssetManager.getTex("whitePawn"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 2:
-                            spriteBatch.Draw(AssetManager.getTex("whiteCastle"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 3:
-                            spriteBatch.Draw(AssetManager.getTex("whiteBishop"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 4:
-                            spriteBatch.Draw(AssetManager.getTex("whiteKnight"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 5:
-                            spriteBatch.Draw(AssetManager.getTex("whiteQueen"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 6:
-                            spriteBatch.Draw(AssetManager.getTex("whiteKing"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 7:
-                            spriteBatch.Draw(AssetManager.getTex("blackPawn"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 8:
-                            spriteBatch.Draw(AssetManager.getTex("blackCastle"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 9:
-                            spriteBatch.Draw(AssetManager.getTex("blackBishop"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 10:
-                            spriteBatch.Draw(AssetManager.getTex("blackKnight"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 11:
-                            spriteBatch.Draw(AssetManager.getTex("blackQueen"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        case 12:
-                            spriteBatch.Draw(AssetManager.getTex("blackKing"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
-                            break;
-                        default:
-                            break;
+                        spriteBatch.Draw(AssetManager.getTex(board.getPos(u,i).textureName), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
                     }
                 }
             }
