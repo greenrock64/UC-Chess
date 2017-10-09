@@ -104,7 +104,6 @@ namespace UC_Chess
                 }
                 //changes to black and writes a console line
                 whiteTurn = !whiteTurn;
-                Console.WriteLine("Blacks Turn");
             }
             else
              if (board[x, y].playerSide == 1 && whiteTurn == false) //Black piece
@@ -121,8 +120,18 @@ namespace UC_Chess
                 }
                 //changes to white and writes console line
                 whiteTurn = !whiteTurn;
-                Console.WriteLine("Whites Turn");
             }
+            string str;
+            if(whiteTurn==true)
+            {
+                str = "White's turn ";
+            }
+            else
+            {
+                str = "Black's turn ";
+            }
+
+            System.Windows.Forms.MessageBox.Show(str);
         }
         
         public void pawn(int x, int y, int newX, int newY)
