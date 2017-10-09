@@ -65,7 +65,11 @@ namespace UC_Chess
 
                     if (board.getPos(u, i) != null)
                     {
-                        spriteBatch.Draw(AssetManager.getTex(board.getPos(u,i).textureName), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                        spriteBatch.Draw(
+                            AssetManager.getTex("pieceSprites"), 
+                            new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), 
+                            AssetManager.getSpritePos(board.getPos(u,i).textureName), 
+                            Color.White);
                     }
                 }
             }
