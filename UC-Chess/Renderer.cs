@@ -39,11 +39,11 @@ namespace UC_Chess
                     //Math to alternate tile checkering
                     if (i % 2 > 0 && u % 2 == 0)
                     {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), new Color(50, 50, 50));
                     }
                     else if (i % 2 == 0 && u % 2 > 0)
                     {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), new Color(50, 50, 50));
                     }
                     else
                     {
@@ -65,7 +65,11 @@ namespace UC_Chess
 
                     if (board.getPos(u, i) != null)
                     {
-                        spriteBatch.Draw(AssetManager.getTex(board.getPos(u,i).textureName), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.White);
+                        spriteBatch.Draw(
+                            AssetManager.getTex("pieceSprites"), 
+                            new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), 
+                            AssetManager.getSpritePos(board.getPos(u,i).textureName), 
+                            Color.White);
                     }
                 }
             }

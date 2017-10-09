@@ -147,7 +147,7 @@ namespace UC_Chess
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred,null, SamplerState.AnisotropicWrap,null,null,null,null);
             render.renderBoard(board, spriteBatch);
             //GUI Render test
             if (state == 1)
