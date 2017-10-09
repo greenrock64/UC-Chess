@@ -39,11 +39,11 @@ namespace UC_Chess
                     //Math to alternate tile checkering
                     if (i % 2 > 0 && u % 2 == 0)
                     {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), new Color(50, 50, 50));
                     }
                     else if (i % 2 == 0 && u % 2 > 0)
                     {
-                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), Color.Black);
+                        spriteBatch.Draw(AssetManager.getTex("tile"), new Rectangle(i * tileWidth, u * tileHeight, tileWidth, tileHeight), new Color(50, 50, 50));
                     }
                     else
                     {
