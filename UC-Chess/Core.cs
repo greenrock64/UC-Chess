@@ -106,7 +106,7 @@ namespace UC_Chess
                                     curSelect.X = boardPosX;
                                     curSelect.Y = boardPosY;
                                     render.setHighlights(new Vector2[] { curSelect });
-                                    if (board.getPos(boardPosX, boardPosY).pieceType == "castle"||board.getPos(boardPosX, boardPosY).pieceType == "pawn")
+                                    if (board.getPos(boardPosX, boardPosY).pieceType == "castle" || board.getPos(boardPosX, boardPosY).pieceType == "pawn" || board.getPos(boardPosX, boardPosY).pieceType == "bishop")
                                     {
                                         render.setHighlights(board.getPossibleMoves(boardPosX, boardPosY));
                                     }

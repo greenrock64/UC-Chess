@@ -90,7 +90,32 @@ namespace UC_Chess
                     }*/
                     break;
                 case "bishop":
-
+                    bool SE = true, SW = true, NE = true, NW = true;
+                    for (int i = 1; i < 8; i++)
+                    {
+                        if (x + i < 8) //S
+                        {
+                            if (y + i < 8 && SE) //E
+                            {
+                                SE = tryPossibleMove(x+i, y+i, possibleMoves, board[x, y].playerSide);
+                            }
+                            if (y - i >= 0 && SW) //W
+                            {
+                                SW = tryPossibleMove(x + i, y - i, possibleMoves, board[x, y].playerSide);
+                            }
+                        }
+                        if (x - i >= 0) //N
+                        {
+                            if (y + i < 8 && NE) //E
+                            {
+                                NE = tryPossibleMove(x - i, y + i, possibleMoves, board[x, y].playerSide);
+                            }
+                            if (y - i >= 0 && NW) //W
+                            {
+                                NW = tryPossibleMove(x - i, y - i, possibleMoves, board[x, y].playerSide);
+                            }
+                        }
+                    }
                     break;
                 case "knight":
                     if ((y - 2) >= 0)
