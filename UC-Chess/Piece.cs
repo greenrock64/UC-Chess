@@ -24,6 +24,7 @@ namespace UC_Chess
             this.playerSide = playerSide;
             setPiece(type.ToLower());
         }
+
         public Piece setPiece(string type)
         {
             this.pieceType = type;

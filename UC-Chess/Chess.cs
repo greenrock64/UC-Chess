@@ -83,11 +83,14 @@ namespace UC_Chess
             return false;
         }
         /// <summary>
-        /// Moves a piece to a new position
+        /// Moves a piece to a new position & turn conditions
         /// </summary>
+        /// 
+        public bool whiteTurn = true; //white goes first
         private void movePiece(int x, int y, int newX, int newY)
         {
-            if (board[x, y].playerSide == 0) //white piece
+            
+            if (board[x, y].playerSide == 0 && whiteTurn == true) //white piece
             {
                 if (board[newX, newY] == null)
                 {
@@ -99,8 +102,12 @@ namespace UC_Chess
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
+                //changes to black and writes a console line
+                whiteTurn = !whiteTurn;
+                Console.WriteLine("Blacks Turn");
             }
-            else if (board[x, y].playerSide == 1) //Black piece
+            else
+             if (board[x, y].playerSide == 1 && whiteTurn == false) //Black piece
             {
                 if (board[newX, newY] == null)
                 {
@@ -112,9 +119,12 @@ namespace UC_Chess
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
+                //changes to white and writes console line
+                whiteTurn = !whiteTurn;
+                Console.WriteLine("Whites Turn");
             }
         }
-
+        
         public void pawn(int x, int y, int newX, int newY)
         {
             if (newX == x + 1 && newY == y)//Forward 1 square
@@ -149,7 +159,7 @@ namespace UC_Chess
             {
                 movePiece(x, y, newX, newY);
             }
-            else if (newX == x - 1 && Math.Abs(y-newY) == 1)//Diagonal
+            else if (newX == x - 1 && Math.Abs(y - newY) == 1)//Diagonal
             {
                 if (board[newX, newY] != null)//Is an occupied tile
                 {
