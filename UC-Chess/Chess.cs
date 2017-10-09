@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 /* Current piece values (subject to change)
  * 1 - W Pawn
@@ -39,6 +40,134 @@ namespace UC_Chess
         {
             return board[x, y];
         }
+
+        //
+        //
+        //WIP ZONE
+        //
+        //
+
+        public Vector2[] getPossibleMoves(int x, int y)
+        {
+            List<Vector2> possibleMoves = new List<Vector2>();
+            switch (board[x, y].pieceType)
+            {
+                case "pawn":
+                    if (board[x, y].playerSide == 0)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                    break;
+                case "bishop":
+
+                    break;
+                case "knight":
+                    if ((y - 2) >= 0)
+                    {
+                        if ((x + 1) < 8)
+                        {
+
+                        }
+                        if ((x - 1) >= 0)
+                        {
+
+                        }
+                    }
+                    else if ((y + 2) < 8)
+                    {
+                        
+                    }
+                    else if ((x - 2) >= 0)
+                    {
+
+                    }
+                    else if ((x + 2) < 8)
+                    {
+
+                    }
+                    break;
+                case "castle":
+                    for (int i = x + 1; i < 8; i++)
+                    {
+                        if (!addPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
+                    }
+                    for (int i = x - 1; i >= 0; i--)
+                    {
+                        if (!addPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
+                    }
+                    for (int i = y + 1; i < 8; i++)
+                    {
+                        if (!addPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
+                    }
+                    for (int i = y - 1; i >= 0; i--)
+                    {
+                        if (!addPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
+                    }
+                    break;
+                case "king":
+
+                    break;
+                case "queen":
+
+                    break;
+            }
+            return possibleMoves.ToArray();
+        }
+
+        public bool addPossibleMove(int x, int y, List<Vector2> possibleMoves, int colour)
+        {
+            if (isValidMove(colour, x, y))
+            {
+                possibleMoves.Add(new Vector2(x, y));
+                if (board[x, y] != null)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool isValidMove(int colour, int x, int y)
+        {
+            if (colour == 0) //white piece
+            {
+                if (board[x, y] == null)
+                {
+                    return true;
+                }
+                else if (board[x, y].playerSide == 1)
+                {
+                    return true;
+                }
+            }
+            else if (colour == 1) //Black piece
+            {
+                if (board[x, y] == null)
+                {
+                    return true;
+                }
+                else if (board[x, y].playerSide == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //
+        //
+        //END WIP ZONE
+        //
+        //
+
 
         /// <summary>
         /// Attempt to move contents of a square to a new square

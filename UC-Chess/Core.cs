@@ -106,6 +106,10 @@ namespace UC_Chess
                                     curSelect.X = boardPosX;
                                     curSelect.Y = boardPosY;
                                     render.setHighlights(new Vector2[] { curSelect });
+                                    if (board.getPos(boardPosX, boardPosY).pieceType == "castle")
+                                    {
+                                        render.setHighlights(board.getPossibleMoves(boardPosX, boardPosY));
+                                    }
                                     System.Console.WriteLine(curSelect.ToString());
                                 }
                             }
