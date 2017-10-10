@@ -47,10 +47,11 @@ namespace UC_Chess
         //
         //
 
-        public Vector2[] getPossibleMoves(int x, int y)
+        public Vector2[] getPossibleMoves(int x, int y, string pieceType = "null")
         {
             List<Vector2> possibleMoves = new List<Vector2>();
-            switch (board[x, y].pieceType)
+            pieceType = (pieceType != "null") ? pieceType : board[x, y].pieceType;
+            switch (pieceType)
             {
                 case "pawn":
                     //Set which direction the pawn can go (black/white piece)
@@ -158,10 +159,25 @@ namespace UC_Chess
                     }
                     break;
                 case "king":
-
+                    //Look at all 9 squares centered on the king
+                    for (int i = -1; i < 2; i++)
+                    {
+                        for (int u = -1; u < 2; u++)
+                        {
+                            //Make sure it's inside the board
+                            if ((x + i < 8 && x + i >= 0) && (y + u < 8 && y + u >= 0))
+                            {
+                                tryPossibleMove(x + i, y + u, possibleMoves, board[x, y].playerSide);
+                            }
+                        }
+                    }
+                    //TODO: Castling
                     break;
                 case "queen":
-
+                    //Queen is the castle and Bishop rolled up into one
+                    //Recursively run getPossibleMoves for castle and bishop
+                    possibleMoves.AddRange(getPossibleMoves(x, y, "castle"));
+                    possibleMoves.AddRange(getPossibleMoves(x, y, "bishop"));
                     break;
             }
             return possibleMoves.ToArray();
