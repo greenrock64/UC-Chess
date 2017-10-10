@@ -120,26 +120,23 @@ namespace UC_Chess
                 case "knight":
                     if ((y - 2) >= 0)
                     {
-                        if ((x + 1) < 8)
-                        {
-
-                        }
-                        if ((x - 1) >= 0)
-                        {
-
-                        }
+                        if ((x + 1) < 8) tryPossibleMove(x + 1, y - 2, possibleMoves, board[x, y].playerSide);
+                        if ((x - 1) >= 0) tryPossibleMove(x - 1, y - 2, possibleMoves, board[x, y].playerSide);
                     }
-                    else if ((y + 2) < 8)
+                    if ((y + 2) < 8)
                     {
-                        
+                        if ((x + 1) < 8) tryPossibleMove(x + 1, y + 2, possibleMoves, board[x, y].playerSide);
+                        if ((x - 1) >= 0) tryPossibleMove(x - 1, y + 2, possibleMoves, board[x, y].playerSide);
                     }
-                    else if ((x - 2) >= 0)
+                    if ((x - 2) >= 0)
                     {
-
+                        if ((y + 1) < 8) tryPossibleMove(x - 2, y + 1, possibleMoves, board[x, y].playerSide);
+                        if ((y - 1) >= 0) tryPossibleMove(x - 2, y - 1, possibleMoves, board[x, y].playerSide);
                     }
-                    else if ((x + 2) < 8)
+                    if ((x + 2) < 8)
                     {
-
+                        if ((y + 1) < 8) tryPossibleMove(x + 2, y + 1, possibleMoves, board[x, y].playerSide);
+                        if ((y - 1) >= 0) tryPossibleMove(x + 2, y - 1, possibleMoves, board[x, y].playerSide);
                     }
                     break;
                 case "castle":
