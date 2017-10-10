@@ -47,8 +47,17 @@ namespace UC_Chess
         //
         //
 
+        /// <summary>
+        /// Calculate a list of possible movement positions for a given position
+        /// </summary>
+        /// <param name="x">X coordinate of the examined piece</param>
+        /// <param name="y">Y coordinate of the examined piece</param>
+        /// <param name="pieceType">(Optional) Override for the pieceType of the square</param>
+        /// <returns>An Array of valid movement positions for the piece</returns>
         public Vector2[] getPossibleMoves(int x, int y, string pieceType = "null")
         {
+            //Stop if the position contains no piece
+            if (board[x, y] == null) return null;
             List<Vector2> possibleMoves = new List<Vector2>();
             pieceType = (pieceType != "null") ? pieceType : board[x, y].pieceType;
             switch (pieceType)
@@ -91,6 +100,7 @@ namespace UC_Chess
                     }*/
                     break;
                 case "bishop":
+                    //If true keep checking that diagonal, else ignore it
                     bool SE = true, SW = true, NE = true, NW = true;
                     for (int i = 1; i < 8; i++)
                     {
@@ -119,41 +129,43 @@ namespace UC_Chess
                     }
                     break;
                 case "knight":
-                    if ((y - 2) >= 0)
+                    //The knight has 8 possible moves
+                    if ((y - 2) >= 0) // West
                     {
                         if ((x + 1) < 8) tryPossibleMove(x + 1, y - 2, possibleMoves, board[x, y].playerSide);
                         if ((x - 1) >= 0) tryPossibleMove(x - 1, y - 2, possibleMoves, board[x, y].playerSide);
                     }
-                    if ((y + 2) < 8)
+                    if ((y + 2) < 8) // East
                     {
                         if ((x + 1) < 8) tryPossibleMove(x + 1, y + 2, possibleMoves, board[x, y].playerSide);
                         if ((x - 1) >= 0) tryPossibleMove(x - 1, y + 2, possibleMoves, board[x, y].playerSide);
                     }
-                    if ((x - 2) >= 0)
+                    if ((x - 2) >= 0) //North
                     {
                         if ((y + 1) < 8) tryPossibleMove(x - 2, y + 1, possibleMoves, board[x, y].playerSide);
                         if ((y - 1) >= 0) tryPossibleMove(x - 2, y - 1, possibleMoves, board[x, y].playerSide);
                     }
-                    if ((x + 2) < 8)
+                    if ((x + 2) < 8) //South
                     {
                         if ((y + 1) < 8) tryPossibleMove(x + 2, y + 1, possibleMoves, board[x, y].playerSide);
                         if ((y - 1) >= 0) tryPossibleMove(x + 2, y - 1, possibleMoves, board[x, y].playerSide);
                     }
                     break;
                 case "castle":
-                    for (int i = x + 1; i < 8; i++)
+                    for (int i = x + 1; i < 8; i++) //South
+                    {
+                        //Stop if we hit an invalid move in this direction
+                        if (!tryPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
+                    }
+                    for (int i = x - 1; i >= 0; i--) //North
                     {
                         if (!tryPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
                     }
-                    for (int i = x - 1; i >= 0; i--)
-                    {
-                        if (!tryPossibleMove(i, y, possibleMoves, board[x, y].playerSide)) break;
-                    }
-                    for (int i = y + 1; i < 8; i++)
+                    for (int i = y + 1; i < 8; i++) //East
                     {
                         if (!tryPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
                     }
-                    for (int i = y - 1; i >= 0; i--)
+                    for (int i = y - 1; i >= 0; i--) //West
                     {
                         if (!tryPossibleMove(x, i, possibleMoves, board[x, y].playerSide)) break;
                     }
@@ -182,47 +194,57 @@ namespace UC_Chess
             }
             return possibleMoves.ToArray();
         }
-
+        /// <summary>
+        /// Add a position to the passed list if it is a valid move
+        /// </summary>
+        /// <param name="x">X coordinate of the examined square</param>
+        /// <param name="y">Y coordinate of the examined square</param>
+        /// <param name="possibleMoves">The output list of possible moves for a piece being appended to</param>
+        /// <param name="colour">The playerSide of the piece at X,Y</param>
+        /// <returns>True if the square was empty and valid, false if the square was occupied</returns>
         public bool tryPossibleMove(int x, int y, List<Vector2> possibleMoves, int colour)
         {
+            //Check the move is valid
             if (isValidMove(colour, x, y))
             {
                 possibleMoves.Add(new Vector2(x, y));
                 if (board[x, y] != null)
                 {
+                    //Square contains a piece
                     return false;
                 }
             }
             else
             {
+                //Move not valid
                 return false;
             }
+            //Move was valid and the square was empty
             return true;
         }
-
+        /// <summary>
+        /// Check if a position is valid for movement
+        /// </summary>
+        /// <param name="colour">The playerSide of the piece that wants to move</param>
+        /// <param name="x">X coordinate of the examined square</param>
+        /// <param name="y">Y coordinate of the examined square</param>
+        /// <returns>True if move is valid, false otherwise</returns>
         public bool isValidMove(int colour, int x, int y)
         {
-            if (colour == 0) //white piece
+            if (colour == 0) //White piece
             {
-                if (board[x, y] == null)
-                {
-                    return true;
-                }
-                else if (board[x, y].playerSide == 1)
-                {
-                    return true;
-                }
+                //Square is empty
+                if (board[x, y] == null) return true;
+
+                //Square is black
+                else if (board[x, y].playerSide == 1) return true;
             }
             else if (colour == 1) //Black piece
             {
-                if (board[x, y] == null)
-                {
-                    return true;
-                }
-                else if (board[x, y].playerSide == 0)
-                {
-                    return true;
-                }
+                if (board[x, y] == null) return true;
+
+                //Square is white
+                else if (board[x, y].playerSide == 0) return true;
             }
             return false;
         }
