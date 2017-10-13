@@ -5,22 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-/* Current piece values (subject to change)
- * 1 - W Pawn
- * 2 - W Castle
- * 3 - W Bishop
- * 4 - W Knight
- * 5 - W King
- * 6 - W Queen
- * 
- * 7 - B Pawn
- * 8 - B Castle
- * 9 - B Bishop
- * 10 - B Knight
- * 11 - B King
- * 12 - B Queen
- */
-
 namespace UC_Chess
 {
     class Chess
@@ -41,17 +25,9 @@ namespace UC_Chess
             return board[x, y];
         }
 
-        //
-        //
-        //WIP ZONE
-        //
-        //
-
         /// <summary>
         /// Calculate a list of possible movement positions for a given position
         /// </summary>
-        /// <param name="x">X coordinate of the examined piece</param>
-        /// <param name="y">Y coordinate of the examined piece</param>
         /// <param name="pieceType">(Optional) Override for the pieceType of the square</param>
         /// <returns>An Array of valid movement positions for the piece</returns>
         public Vector2[] getPossibleMoves(int x, int y, string pieceType = "null")
@@ -97,6 +73,7 @@ namespace UC_Chess
                             tryPossibleMove(x + 2*dir, y, possibleMoves, board[x, y].playerSide);
                         }
                     }
+                    //TODO: En passant
                     break;
                 case "bishop":
                     //If true keep checking that diagonal, else ignore it
@@ -193,11 +170,10 @@ namespace UC_Chess
             }
             return possibleMoves.ToArray();
         }
+
         /// <summary>
         /// Add a position to the passed list if it is a valid move
         /// </summary>
-        /// <param name="x">X coordinate of the examined square</param>
-        /// <param name="y">Y coordinate of the examined square</param>
         /// <param name="possibleMoves">The output list of possible moves for a piece being appended to</param>
         /// <param name="colour">The playerSide of the piece at X,Y</param>
         /// <returns>True if the square was empty and valid, false if the square was occupied</returns>
@@ -221,12 +197,11 @@ namespace UC_Chess
             //Move was valid and the square was empty
             return true;
         }
+
         /// <summary>
         /// Check if a position is valid for movement
         /// </summary>
         /// <param name="colour">The playerSide of the piece that wants to move</param>
-        /// <param name="x">X coordinate of the examined square</param>
-        /// <param name="y">Y coordinate of the examined square</param>
         /// <returns>True if move is valid, false otherwise</returns>
         public bool isValidMove(int colour, int x, int y)
         {
@@ -248,13 +223,6 @@ namespace UC_Chess
             return false;
         }
 
-        //
-        //
-        //END WIP ZONE
-        //
-        //
-
-
         /// <summary>
         /// Attempt to move contents of a square to a new square
         /// </summary>
@@ -272,6 +240,7 @@ namespace UC_Chess
             }
             return false;
         }
+
         /// <summary>
         /// Moves a piece to a new position
         /// </summary>
@@ -340,6 +309,7 @@ namespace UC_Chess
                 }
             }
         }
+
         public void setFrontRow(Piece[,] board, int i)
         {
             if (i == 0) //White Pieces
