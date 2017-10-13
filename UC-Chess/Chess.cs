@@ -89,15 +89,15 @@ namespace UC_Chess
                             }
                         }
                     }
-                    /*TODO: Add hasMoved flag to piece class
+                    //TODO: Add hasMoved flag to piece class
                     //Forward 2 squares
                     if (x + 2*dir < 8 && x + 2*dir >= 0)
                     {
-                        if (Piece.hasMoved == false) //Pawn at starting pos and is moving 2 squares
+                        if (board[x,y].hasMoved == false && board[x+2*dir, y] == null) //Pawn at starting pos and is moving 2 squares
                         {
-                            tryPossibleMove(x + 2, y, possibleMoves, board[x, y].playerSide);
+                            tryPossibleMove(x + 2*dir, y, possibleMoves, board[x, y].playerSide);
                         }
-                    }*/
+                    }
                     break;
                 case "bishop":
                     //If true keep checking that diagonal, else ignore it
@@ -307,11 +307,13 @@ namespace UC_Chess
             {
                 if (board[newX, newY] == null)
                 {
+                    board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
                 else if (board[newX, newY].playerSide == 1)
                 {
+                    board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
@@ -320,11 +322,13 @@ namespace UC_Chess
             {
                 if (board[newX, newY] == null)
                 {
+                    board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
                 else if (board[newX, newY].playerSide == 0)
                 {
+                    board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
