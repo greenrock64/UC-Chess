@@ -89,7 +89,6 @@ namespace UC_Chess
                             }
                         }
                     }
-                    //TODO: Add hasMoved flag to piece class
                     //Forward 2 squares
                     if (x + 2*dir < 8 && x + 2*dir >= 0)
                     {
@@ -266,35 +265,10 @@ namespace UC_Chess
             if (board[x, y] != null) //y==x x==y
             {
                 //to-do classes for each piece
-                switch (board[x, y].pieceType)
+                if (getPossibleMoves(x, y).Contains(new Vector2(newX, newY)))
                 {
-                    case "pawn":
-                        if (board[x, y].playerSide == 0)
-                        {
-                            pawn(x, y, newX, newY);
-                        }
-                        else
-                        {
-                            blackpawn(x, y, newX, newY);
-                        }
-                        break;
-                    case "bishop":
-                        bishop(x, y, newX, newY);
-                        break;
-                    case "knight":
-                        knight(x, y, newX, newY);
-                        break;
-                    case "castle":
-                        castle(x, y, newX, newY);
-                        break;
-                    case "king":
-                        king(x, y, newX, newY);
-                        break;
-                    case "queen":
-                        queen(x, y, newX, newY);
-                        break;
+                    movePiece(x, y, newX, newY);
                 }
-
             }
             return false;
         }
@@ -335,105 +309,6 @@ namespace UC_Chess
             }
         }
 
-        public void pawn(int x, int y, int newX, int newY)
-        {
-            if (newX == x + 1 && newY == y)//Forward 1 square
-            {
-                if (board[newX, newY] == null)//No piece ahead
-                {
-                    movePiece(x, y, newX, newY);
-                }
-            }
-            else if (x == 1 && (newX == x + 2 && newY == y)) //Pawn at starting pos and is moving 2 squares
-            {
-                movePiece(x, y, newX, newY);
-            }
-            else if (newX == x + 1 && Math.Abs(y - newY) == 1)//Diagonal
-            {
-                if (board[newX, newY] != null)//Is an occupied tile
-                {
-                    movePiece(x, y, newX, newY);
-                }
-            }
-        }
-        public void blackpawn(int x, int y, int newX, int newY)
-        {
-            if (newX == x - 1 && newY == y)//Forward 1 square
-            {
-                if (board[newX, newY] == null)//No piece ahead
-                {
-                    movePiece(x, y, newX, newY);
-                }
-            }
-            else if (x == 6 && (newX == x - 2 && newY == y)) //Pawn at starting pos and is moving 2 squares
-            {
-                movePiece(x, y, newX, newY);
-            }
-            else if (newX == x - 1 && Math.Abs(y-newY) == 1)//Diagonal
-            {
-                if (board[newX, newY] != null)//Is an occupied tile
-                {
-                    movePiece(x, y, newX, newY);
-                }
-            }
-        }
-        public void castle(int x, int y, int newX, int newY)
-        {
-            if ((y != newY && x == newX) || (x != newX && y == newY)) //for moving left and right and up and down
-            {
-                movePiece(x, y, newX, newY);
-            }
-        }
-        public void bishop(int x, int y, int newX, int newY)
-        {
-            int n, k;
-            n = newX - x;
-            k = newY - y;
-            n = Math.Abs(n); //take absolute value because negatives mess things up
-            k = Math.Abs(k);
-            if (n == k) //makes sure that things stay on the diagonal
-            {
-                movePiece(x, y, newX, newY);
-            }
-        }
-        public void queen(int x, int y, int newX, int newY)
-        {
-            int n, k; //queen is castle and bishop rolled up into one
-            n = newX - x;
-            k = newY - y;
-            n = Math.Abs(n);
-            k = Math.Abs(k);
-            if ((n == k) || (y != newY && x == newX) || (x != newX && y == newY))
-            {
-                movePiece(x, y, newX, newY);
-            }
-        }
-        public void king(int x, int y, int newX, int newY)
-        {
-            if ((Math.Abs(x - newX) == 1 && Math.Abs(y - newY) == 1) || (Math.Abs(x - newX) == 1 && newY == y) || (Math.Abs(y - newY) == 1 && newX == x)) //not broken but it looks bad
-            {
-                movePiece(x, y, newX, newY);
-            }
-        }
-        public void knight(int x, int y, int newX, int newY)
-        {
-            if (y == newY - 2 && (x == newX - 1 || x == newX + 1)) //this one is a b***h. Could do with some fixing up
-            {
-                movePiece(x, y, newX, newY);
-            }
-            else if (y == newY + 2 && (x == newX - 1 || x == newX + 1))
-            {
-                movePiece(x, y, newX, newY);
-            }
-            else if (x == newX + 2 && (y == newY - 1 || y == newY + 1))
-            {
-                movePiece(x, y, newX, newY);
-            }
-            else if (x == newX - 2 && (y == newY - 1 || y == newY + 1))
-            {
-                movePiece(x, y, newX, newY);
-            }
-        }
         /// <summary>
         /// Set the initial pieces on the board
         /// </summary>
