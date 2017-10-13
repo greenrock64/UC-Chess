@@ -128,6 +128,8 @@ namespace UC_Chess
                             if (resetButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1)))
                             {
                                 board = new Chess();
+                                curSelect = new Vector2(-1, -1);
+                                render.setHighlights(new Vector2[] {curSelect});
                                 state = 0;
                             }
                             if (quitButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1)))
