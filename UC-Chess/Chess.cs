@@ -10,6 +10,8 @@ namespace UC_Chess
     class Chess
     {
         Piece[,] board;
+        public bool count50 = false; //if piece isnt taken it is false. if piece is taken it is true
+        public int ruleCounter = 0; //counts the amount of back to back turns without a piece being taken
         public Chess()
         {
             //Instantiate the board as an 8x8 array
@@ -253,12 +255,16 @@ namespace UC_Chess
                     board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
+                    count50 = false; //piece has not been taken
+                    count50Rule();
                 }
                 else if (board[newX, newY].playerSide == 1)
                 {
                     board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
+                    count50 = true; //piece has been taken
+                    count50Rule();
                 }
             }
             else if (board[x, y].playerSide == 1) //Black piece
@@ -268,16 +274,34 @@ namespace UC_Chess
                     board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
+                    count50 = false; //piece has not been taken
+                    count50Rule();
                 }
                 else if (board[newX, newY].playerSide == 0)
                 {
                     board[x, y].hasMoved = true;
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
+                    count50 = true; //piece has been taken
+                    count50Rule();
                 }
             }
         }
-
+        public void count50Rule() //counter class
+        {
+            if (count50 == true)
+            {
+                ruleCounter++;
+                if (ruleCounter == 50)
+                {
+                    //game ends in a draw. Maybe a pop up box with the win condiction context in it
+                }
+            }
+            else
+            {
+                ruleCounter = 0;
+            }
+        }
         /// <summary>
         /// Set the initial pieces on the board
         /// </summary>
