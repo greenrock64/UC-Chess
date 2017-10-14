@@ -105,7 +105,8 @@ namespace UC_Chess
                                 {
                                     curSelect.X = boardPosX;
                                     curSelect.Y = boardPosY;
-                                    render.setHighlights(new Vector2[] { curSelect });
+                                    //render.setHighlights(new Vector2[] { curSelect });
+                                    render.setHighlights(board.getPossibleMoves(boardPosX, boardPosY));
                                     System.Console.WriteLine(curSelect.ToString());
                                 }
                             }
@@ -127,6 +128,8 @@ namespace UC_Chess
                             if (resetButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1)))
                             {
                                 board = new Chess();
+                                curSelect = new Vector2(-1, -1);
+                                render.setHighlights(new Vector2[] {curSelect});
                                 state = 0;
                             }
                             if (quitButton.Intersects(new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1)))

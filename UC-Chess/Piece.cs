@@ -13,6 +13,7 @@ namespace UC_Chess
         //Logic Variables
         public string pieceType;
         public int playerSide; //0 - White, 1 - Black
+        public bool hasMoved;
 
         /// <summary>
         /// Piece class to store data related to individual pieces on the board.
@@ -22,6 +23,7 @@ namespace UC_Chess
         public Piece(string type, int playerSide)
         {
             this.playerSide = playerSide;
+            hasMoved = false;
             setPiece(type.ToLower());
         }
         public Piece setPiece(string type)
