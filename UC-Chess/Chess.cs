@@ -68,7 +68,7 @@ namespace UC_Chess
                     //Forward 2 squares
                     if (x + 2*dir < 8 && x + 2*dir >= 0)
                     {
-                        if (board[x,y].hasMoved == false && board[x+2*dir, y] == null) //Pawn at starting pos and is moving 2 squares
+                        if (board[x,y].hasMoved == false && board[x+2*dir, y] == null && board[x + dir, y] == null) //Pawn at starting pos and is moving 2 squares
                         {
                             tryPossibleMove(x + 2*dir, y, possibleMoves, board[x, y].playerSide);
                         }
