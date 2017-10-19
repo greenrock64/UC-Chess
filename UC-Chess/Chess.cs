@@ -159,7 +159,23 @@ namespace UC_Chess
                             }
                         }
                     }
-                    //TODO: Castling
+                    if (board[x, y].hasMoved == false && board[x, 0] != null && board[x, 7] != null) //if king hasnt moved
+                    {
+                        if (board[x, 0].pieceType == "castle" && board[x, 0].hasMoved == false) //if castle hasnt moved
+                        {
+                            if (board[x, y - 2] == null && board[x, y - 1] == null)//move left
+                            {
+                                tryPossibleMove(x, y - 2, possibleMoves, board[x, y].playerSide);
+                            }
+                        }
+                        if (board[x, 7].pieceType == "castle" && board[x, 7].hasMoved == false && board[x, 6] == null) // check right
+                        {
+                            if (board[x, y + 2] == null && board[x, y + 1] == null)//move right
+                            {
+                                tryPossibleMove(x, y + 2, possibleMoves, board[x, y].playerSide);
+                            }
+                        }
+                    }
                     break;
                 case "queen":
                     //Queen is the castle and Bishop rolled up into one
@@ -235,7 +251,31 @@ namespace UC_Chess
                 //to-do classes for each piece
                 if (getPossibleMoves(x, y).Contains(new Vector2(newX, newY)))
                 {
-                    movePiece(x, y, newX, newY);
+                    if (board[x, y].pieceType == "king" && Math.Abs(newY - y) == 2)
+                    {
+                        if (board[newX, newY] == board[x, y - 2]) //move left
+                        {
+                            if (board[x, 2] == null) //moving left
+                            {
+                                board[x, 2] = board[x, 0]; //move castle
+                                board[x, 0] = null;
+                                movePiece(x, y, newX, newY);
+                            }
+                        }
+                        if (board[newX, newY] == board[x, y + 2]) //move right
+                        {
+                            if (board[x, 4] == null) //moving right
+                            {
+                                board[x, 4] = board[x, 7]; //move castle
+                                board[x, 7] = null;
+                                movePiece(x, y, newX, newY);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        movePiece(x, y, newX, newY);
+                    }
                 }
             }
             return false;
