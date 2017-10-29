@@ -10,6 +10,7 @@ namespace UC_Chess
     class Chess
     {
         Piece[,] board;
+        public bool enPassant = true;
         public Chess()
         {
             //Instantiate the board as an 8x8 array
@@ -34,13 +35,14 @@ namespace UC_Chess
         {
             //Stop if the position contains no piece
             if (board[x, y] == null) return null;
+            enPassant = false;
             List<Vector2> possibleMoves = new List<Vector2>();
             pieceType = (pieceType != "null") ? pieceType : board[x, y].pieceType;
             switch (pieceType)
             {
                 case "pawn":
                     //Set which direction the pawn can go (black/white piece)
-                    int dir = (board[x,y].playerSide == 0) ? 1:-1;
+                    int dir = (board[x, y].playerSide == 0) ? 1 : -1, dir2 = (board[x, y].playerSide == 0) ? 4 : 3;
                     //Check board boundaries
                     if (x + dir < 8 && x + dir >= 0)
                     {
@@ -56,12 +58,30 @@ namespace UC_Chess
                             {
                                 tryPossibleMove(x + dir, y - 1, possibleMoves, board[x, y].playerSide);
                             }
+
+                            if (board[x, y - 1] != null && x == dir2 && board[x + dir, y - 1] == null)
+                            {
+                                if (board[x, y - 1].playerSide != board[x, y].playerSide)
+                                {
+                                    enPassant = true;
+                                    tryPossibleMove(x + dir, y - 1, possibleMoves, board[x, y].playerSide);
+                                }
+                            }
                         }
                         if (y + 1 < 8)
                         {
                             if (board[x + dir, y + 1] != null)
                             {
                                 tryPossibleMove(x + dir, y + 1, possibleMoves, board[x, y].playerSide);
+                            }
+
+                            if (board[x, y + 1] != null && x == dir2 && board[x + dir, y + 1] == null)
+                            {
+                                if (board[x, y + 1].playerSide != board[x, y].playerSide)
+                                {
+                                    enPassant = true;
+                                    tryPossibleMove(x + dir, y + 1, possibleMoves, board[x, y].playerSide);
+                                }
                             }
                         }
                     }
@@ -73,7 +93,6 @@ namespace UC_Chess
                             tryPossibleMove(x + 2*dir, y, possibleMoves, board[x, y].playerSide);
                         }
                     }
-                    //TODO: En passant
                     break;
                 case "bishop":
                     //If true keep checking that diagonal, else ignore it
@@ -232,7 +251,6 @@ namespace UC_Chess
             //If there is a piece to move
             if (board[x, y] != null) //y==x x==y
             {
-                //to-do classes for each piece
                 if (getPossibleMoves(x, y).Contains(new Vector2(newX, newY)))
                 {
                     movePiece(x, y, newX, newY);
@@ -246,7 +264,14 @@ namespace UC_Chess
         /// </summary>
         private void movePiece(int x, int y, int newX, int newY)
         {
-            if (board[x, y].playerSide == 0) //white piece
+            if (enPassant == true)
+            {
+                board[x, y].hasMoved = true;
+                board[newX, newY] = board[x, y];
+                board[x, newY] = null;
+                board[x, y] = null;
+            }
+            else if (board[x, y].playerSide == 0) //white piece
             {
                 if (board[newX, newY] == null)
                 {
