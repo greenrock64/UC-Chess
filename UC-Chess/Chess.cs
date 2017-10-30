@@ -10,7 +10,7 @@ namespace UC_Chess
     class Chess
     {
         Piece[,] board;
-        public bool enPassant = true;
+        public bool enPassant = true; // en passant bool
         public Chess()
         {
             //Instantiate the board as an 8x8 array
@@ -52,18 +52,18 @@ namespace UC_Chess
                             tryPossibleMove(x + dir, y, possibleMoves, board[x, y].playerSide);
                         }
                         //Diagonals
-                        if (y - 1 >= 0)
+                        if (y - 1 >= 0) 
                         {
                             if (board[x + dir, y - 1] != null) //Piece ahead
                             {
                                 tryPossibleMove(x + dir, y - 1, possibleMoves, board[x, y].playerSide);
                             }
 
-                            if (board[x, y - 1] != null && x == dir2 && board[x + dir, y - 1] == null)
-                            {
+                            if (board[x, y - 1] != null && x == dir2 && board[x + dir, y - 1] == null) // en passant is in here so it doesnt check outside the array. 
+                            { //This this checking if there is a piece to the left. making sure it  x either equals 3 or 4 depending on the selected piece colour. The last check is to see if the place the piece is going to make to is clear
                                 if (board[x, y - 1].playerSide != board[x, y].playerSide)
-                                {
-                                    enPassant = true;
+                                {//makes sure it isnt taking its own colour type.
+                                    enPassant = true; //this is so it can be caught in the movement class
                                     tryPossibleMove(x + dir, y - 1, possibleMoves, board[x, y].playerSide);
                                 }
                             }
@@ -75,7 +75,7 @@ namespace UC_Chess
                                 tryPossibleMove(x + dir, y + 1, possibleMoves, board[x, y].playerSide);
                             }
 
-                            if (board[x, y + 1] != null && x == dir2 && board[x + dir, y + 1] == null)
+                            if (board[x, y + 1] != null && x == dir2 && board[x + dir, y + 1] == null) //also en passant
                             {
                                 if (board[x, y + 1].playerSide != board[x, y].playerSide)
                                 {
@@ -264,7 +264,7 @@ namespace UC_Chess
         /// </summary>
         private void movePiece(int x, int y, int newX, int newY)
         {
-            if (enPassant == true)
+            if (enPassant == true) //the en passant catch.
             {
                 board[x, y].hasMoved = true;
                 board[newX, newY] = board[x, y];
