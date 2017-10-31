@@ -206,7 +206,7 @@ namespace UC_Chess
         /// <returns>True if move is valid, false otherwise</returns>
         public bool isValidMove(int colour, int x, int y)
         {
-            if (colour == 0 && whiteTurn == true) //White piece
+            if (colour == 0 && whiteTurn == true) //White piece //white turn
             {
                 //Square is empty
                 if (board[x, y] == null) return true;
@@ -214,7 +214,7 @@ namespace UC_Chess
                 //Square is black
                 else if (board[x, y].playerSide == 1) return true;
             }
-            else if (colour == 1 && whiteTurn == false) //Black piece
+            else if (colour == 1 && whiteTurn == false) //Black piece //black turn
             {
                 if (board[x, y] == null) return true;
 
