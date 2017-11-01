@@ -10,6 +10,7 @@ namespace UC_Chess
     class Chess
     {
         Piece[,] board;
+        public bool whiteTurn = true; //white goes first
         public Chess()
         {
             //Instantiate the board as an 8x8 array
@@ -205,7 +206,7 @@ namespace UC_Chess
         /// <returns>True if move is valid, false otherwise</returns>
         public bool isValidMove(int colour, int x, int y)
         {
-            if (colour == 0) //White piece
+            if (colour == 0 && whiteTurn == true) //White piece //white turn
             {
                 //Square is empty
                 if (board[x, y] == null) return true;
@@ -213,7 +214,7 @@ namespace UC_Chess
                 //Square is black
                 else if (board[x, y].playerSide == 1) return true;
             }
-            else if (colour == 1) //Black piece
+            else if (colour == 1 && whiteTurn == false) //Black piece //black turn
             {
                 if (board[x, y] == null) return true;
 
@@ -260,6 +261,7 @@ namespace UC_Chess
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
+                whiteTurn = !whiteTurn;
             }
             else if (board[x, y].playerSide == 1) //Black piece
             {
@@ -275,6 +277,7 @@ namespace UC_Chess
                     board[newX, newY] = board[x, y];
                     board[x, y] = null;
                 }
+                whiteTurn = !whiteTurn;
             }
         }
 
